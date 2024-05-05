@@ -6,11 +6,41 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CategoryView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var items: [Item]
+    
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+        ScrollView(.vertical) {
+            LazyVGrid(columns: Array(repeating: GridItem(), count: 2), content: {
+                ForEach(1...20, id: \.self) { _ in
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color(.gray).gradient).opacity(0.6)
+                        .frame(height: 100)
+                        .overlay {
+                            VStack(alignment: .leading, spacing: 6) {
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(.white.opacity(0.5))
+                                    .frame(width: 150, height: 40)
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(.white.opacity(0.5))
+                                    .frame(width: 150, height: 17)
+                            }
+                        }
+                }
+            })
+            .padding(15)
+        }
+        .scrollIndicators(.hidden)
+        .scrollClipDisabled()
+        .mask {
+            Rectangle()
+                .padding(.bottom, -100)
+        }
+    } 
 }
 
 #Preview {
