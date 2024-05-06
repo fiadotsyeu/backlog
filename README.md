@@ -8,12 +8,12 @@ Backlog is an iPhone application that allows users to save links, articles, movi
 
 ### **Functionality**
 
-Categories: Users can create and manage categories of items, such as "Links," "Articles," "Movies," and "Games."
-Adding Items: Ability to add new items to the selected category with detailed information and links.
-Favorite Items: Ability to add items to the favorites list for quick access.
-Search and Filtering: Search for items by keywords and filter by categories.
-Data Export: Users can export data in JSON, CSV, and TXT formats for saving or sharing information.
-Reminders: MemoMinder feature reminds users of various entries at random times to help them remember plans and saved items.
+- Categories: Users can create and manage categories of items, such as "Links," "Articles," "Movies," and "Games."
+- Adding Items: Ability to add new items to the selected category with detailed information and links.
+- Favorite Items: Ability to add items to the favorites list for quick access.
+- Search and Filtering: Search for items by keywords and filter by categories.
+- Data Export: Users can export data in JSON, CSV, and TXT formats for saving or sharing information.
+- Reminders: MemoMinder feature reminds users of various entries at random times to help them remember plans and saved items.
 
 <!--### Screenshots-->
 <!--  <img src="Simulator Screenshot - 1.png" width="300">  <img src="Simulator Screenshot - 2.png" width="300"> -->
