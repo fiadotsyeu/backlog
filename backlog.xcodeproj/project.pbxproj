@@ -15,6 +15,15 @@
 		81A4F16D2BE4C56500B27429 /* backlogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A4F16C2BE4C56500B27429 /* backlogTests.swift */; };
 		81A4F1772BE4C56500B27429 /* backlogUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A4F1762BE4C56500B27429 /* backlogUITests.swift */; };
 		81A4F1792BE4C56500B27429 /* backlogUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A4F1782BE4C56500B27429 /* backlogUITestsLaunchTests.swift */; };
+		81A4F1882BE54B5B00B27429 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A4F1872BE54B5B00B27429 /* Tab.swift */; };
+		81A4F18A2BE6414000B27429 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A4F1892BE6414000B27429 /* HomeView.swift */; };
+		81A4F1A22BE79A5F00B27429 /* AllView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A4F1A12BE79A5F00B27429 /* AllView.swift */; };
+		81A4F1A52BE7A67600B27429 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A4F1A42BE7A67600B27429 /* Extensions.swift */; };
+		81A4F1A72BE7BCB900B27429 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A4F1A62BE7BCB900B27429 /* CategoryView.swift */; };
+		81A4F1AB2BE7FA9A00B27429 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A4F1AA2BE7FA9A00B27429 /* SettingView.swift */; };
+		81A958F32BE8BA4F005CA623 /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A958F22BE8BA4F005CA623 /* FloatingButton.swift */; };
+		81A958F52BE90D0B005CA623 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 81A958F42BE90D0B005CA623 /* README.md */; };
+		81A958F72BE90E35005CA623 /* logo_backlog.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A958F62BE90E35005CA623 /* logo_backlog.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +55,15 @@
 		81A4F1722BE4C56500B27429 /* backlogUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = backlogUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		81A4F1762BE4C56500B27429 /* backlogUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = backlogUITests.swift; sourceTree = "<group>"; };
 		81A4F1782BE4C56500B27429 /* backlogUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = backlogUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		81A4F1872BE54B5B00B27429 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
+		81A4F1892BE6414000B27429 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		81A4F1A12BE79A5F00B27429 /* AllView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllView.swift; sourceTree = "<group>"; };
+		81A4F1A42BE7A67600B27429 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		81A4F1A62BE7BCB900B27429 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
+		81A4F1AA2BE7FA9A00B27429 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		81A958F22BE8BA4F005CA623 /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
+		81A958F42BE90D0B005CA623 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		81A958F62BE90E35005CA623 /* logo_backlog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_backlog.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +94,8 @@
 		81A4F14D2BE4C56200B27429 = {
 			isa = PBXGroup;
 			children = (
+				81A958F62BE90E35005CA623 /* logo_backlog.png */,
+				81A958F42BE90D0B005CA623 /* README.md */,
 				81A4F1582BE4C56200B27429 /* backlog */,
 				81A4F16B2BE4C56500B27429 /* backlogTests */,
 				81A4F1752BE4C56500B27429 /* backlogUITests */,
@@ -96,9 +116,11 @@
 		81A4F1582BE4C56200B27429 /* backlog */ = {
 			isa = PBXGroup;
 			children = (
+				81A4F1A32BE7A63600B27429 /* Service */,
+				81A4F1862BE54B3A00B27429 /* Model */,
+				81A4F1852BE54B3200B27429 /* View */,
 				81A4F1592BE4C56200B27429 /* backlogApp.swift */,
 				81A4F15B2BE4C56200B27429 /* ContentView.swift */,
-				81A4F15D2BE4C56200B27429 /* Item.swift */,
 				81A4F15F2BE4C56500B27429 /* Assets.xcassets */,
 				81A4F1612BE4C56500B27429 /* Preview Content */,
 			);
@@ -128,6 +150,35 @@
 				81A4F1782BE4C56500B27429 /* backlogUITestsLaunchTests.swift */,
 			);
 			path = backlogUITests;
+			sourceTree = "<group>";
+		};
+		81A4F1852BE54B3200B27429 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				81A4F1892BE6414000B27429 /* HomeView.swift */,
+				81A4F1A12BE79A5F00B27429 /* AllView.swift */,
+				81A4F1A62BE7BCB900B27429 /* CategoryView.swift */,
+				81A4F1AA2BE7FA9A00B27429 /* SettingView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		81A4F1862BE54B3A00B27429 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				81A4F15D2BE4C56200B27429 /* Item.swift */,
+				81A4F1872BE54B5B00B27429 /* Tab.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		81A4F1A32BE7A63600B27429 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				81A4F1A42BE7A67600B27429 /* Extensions.swift */,
+				81A958F22BE8BA4F005CA623 /* FloatingButton.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,7 +285,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81A958F52BE90D0B005CA623 /* README.md in Resources */,
 				81A4F1632BE4C56500B27429 /* Preview Assets.xcassets in Resources */,
+				81A958F72BE90E35005CA623 /* logo_backlog.png in Resources */,
 				81A4F1602BE4C56500B27429 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,7 +315,14 @@
 			files = (
 				81A4F15C2BE4C56200B27429 /* ContentView.swift in Sources */,
 				81A4F15E2BE4C56200B27429 /* Item.swift in Sources */,
+				81A4F1A22BE79A5F00B27429 /* AllView.swift in Sources */,
+				81A4F1AB2BE7FA9A00B27429 /* SettingView.swift in Sources */,
+				81A4F18A2BE6414000B27429 /* HomeView.swift in Sources */,
 				81A4F15A2BE4C56200B27429 /* backlogApp.swift in Sources */,
+				81A4F1882BE54B5B00B27429 /* Tab.swift in Sources */,
+				81A958F32BE8BA4F005CA623 /* FloatingButton.swift in Sources */,
+				81A4F1A72BE7BCB900B27429 /* CategoryView.swift in Sources */,
+				81A4F1A52BE7A67600B27429 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +494,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -463,6 +524,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
