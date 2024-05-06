@@ -9,8 +9,9 @@ import SwiftUI
 
 
 struct SettingView: View {
-    @AppStorage("isNotification") private var notification: Bool = true
+    @AppStorage("isNotification") private var isNotification: Bool = true
     @AppStorage("isMemoMinder") private var isMemoMinder: Bool = true
+    @AppStorage("selectedMemoMinder") private var selectedMemoMinder: Int = 5
     @AppStorage("selectedLanguage") private var selectedLanguage: String = "en"
     @AppStorage("selectOptionExport") private var selectOptionExport: Bool = false
     @AppStorage("selectOptionImport") private var selectOptionImport: Bool = false
@@ -19,23 +20,23 @@ struct SettingView: View {
     var body: some View {
         Form {
             Section(header: Text("Notification")) {
-                Toggle(isOn: $notification, label: {
+                Toggle(isOn: $isNotification, label: {
                     Text("Notification")
                 })
             }
             Section(header: Text("MemoMinder")) {
-                Toggle(isOn: $notification, label: {
+                Toggle(isOn: $isMemoMinder, label: {
                     Text("MemoMinder")
                 })
-                Picker(selection: $notification, label: Text("Select frequency")) {
-                    Text("1 time per day")
-                    Text("1 time every two days")
-                    Text("1 time every three days")
-                    Text("1 time every four days")
-                    Text("1 time every five days")
-                    Text("1 time during weekends")
-                    Text("1 time per week")
-                    Text("1 time per month")
+                Picker(selection: $selectedMemoMinder, label: Text("Select frequency")) {
+                    Text("1 time per day").tag(0)
+                    Text("1 time every two days").tag(1)
+                    Text("1 time every three days").tag(2)
+                    Text("1 time every four days").tag(3)
+                    Text("1 time every five days").tag(4)
+                    Text("1 time during weekends").tag(5)
+                    Text("1 time per week").tag(6)
+                    Text("1 time per month").tag(7)
                 }
             }
             Section(header: Text("Language")) {
