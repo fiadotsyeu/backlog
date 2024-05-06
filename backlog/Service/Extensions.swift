@@ -54,6 +54,6 @@ extension View {
 
 
 #Preview {
-    Home()
+    HomeView()
 }
 

@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct Home: View {
+struct HomeView: View {
     @State private var selectedTab: Tab?
     @Environment(\.colorScheme) private var scheme
     @State private var tabProgress: CGFloat = 0
