@@ -45,6 +45,28 @@ struct AllView: View {
                     .padding(.bottom, -100)
             }
             .background(.gray.opacity(0.1))
+            .overlay(alignment: .bottomTrailing) {
+                FloatingButton {
+                    FloatingAction(symbol: "plus") {
+                        print("one")
+                    }
+                    FloatingAction(symbol: "plus") {
+                        print("two")
+                    }
+                } label: { isExpanded in
+                    Image(systemName: "plus")
+                        .font(.title3)
+                        .fontWidth(.standard)
+                        .foregroundStyle(.white)
+                        .rotationEffect(.init(degrees: isExpanded ? 45 : 0))
+                        .scaleEffect(1.02)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(.black, in: .circle)
+                        // Scaling effect when expanded
+                        .scaleEffect(isExpanded ? 0.9 : 1)
+                }
+                .padding()
+            }
         } detail: {
             Text("sad")
         }
