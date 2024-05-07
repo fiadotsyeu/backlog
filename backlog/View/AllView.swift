@@ -13,63 +13,88 @@ struct AllView: View {
     @Query private var items: [Item]
     @State private var searchText = ""
     
+    private var searchResults : [Item] {
+        searchText.isEmpty ? items : items.filter { $0.title.contains(searchText) }
+    }
 
     var body: some View {
-        NavigationSplitView {
+        NavigationStack {
             ScrollView(.vertical) {
+                
                 CustomSearchBar(searchText: $searchText)
-                LazyVGrid(columns: Array(repeating: GridItem(), count: 1), content: {
-                    ForEach(1...20, id: \.self) { _ in
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(Color(.gray).gradient).opacity(0.6)
-                            .frame(height: 100)
+                    .padding(.vertical, 6)
+                
+                ForEach(searchResults, id: \.self) { item in
+                    NavigationLink(destination: DetailView(item: item), label: {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color(.white))
+                            .frame(height: 50)
                             .overlay {
-                                VStack(alignment: .leading, spacing: 6) {
-                                    RoundedRectangle(cornerRadius: 6)
-                                        .fill(.white.opacity(0.5))
-                                        .frame(width: 320, height: 30)
-                                    RoundedRectangle(cornerRadius: 6)
-                                        .fill(.white.opacity(0.5))
-                                        .frame(width: 150, height: 17)
+                                VStack(alignment: .leading) {
+                                    Text(item.date, format: Date.FormatStyle(date:
+                                            .numeric, time: .standard))
                                 }
                             }
-                    }
-                })
-                .padding(15)
+                    })
+                }
+                .padding(.horizontal, 20)
             }
-                        
-            .scrollIndicators(.hidden)
+            
             .scrollClipDisabled()
+            .background(.gray.opacity(0.1))
+            .scrollIndicators(.hidden)
             .mask {
                 Rectangle()
                     .padding(.bottom, -100)
+                    .background(.black)
             }
-            .background(.gray.opacity(0.1))
             .overlay(alignment: .bottomTrailing) {
-                FloatingButton {
-                    FloatingAction(symbol: "plus") {
-                        print("one")
-                    }
-                    FloatingAction(symbol: "plus") {
-                        print("two")
-                    }
-                } label: { isExpanded in
-                    Image(systemName: "plus")
-                        .font(.title3)
-                        .fontWidth(.standard)
-                        .foregroundStyle(.white)
-                        .rotationEffect(.init(degrees: isExpanded ? 45 : 0))
-                        .scaleEffect(1.02)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(.black, in: .circle)
-                        // Scaling effect when expanded
-                        .scaleEffect(isExpanded ? 0.9 : 1)
-                }
-                .padding()
+                FButton()
             }
-        } detail: {
-            Text("sad")
         }
+    }
+    
+    
+    private func addItem() {
+        withAnimation {
+            for _ in 0..<15 {
+                let newItem = Item(title: "swiftUI", subTitle: "subTitle", body: "body", category: "framevorks")
+                modelContext.insert(newItem)
+                try? modelContext.save()
+            }
+        }
+    }
+    
+    private func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                modelContext.delete(items[index])
+            }
+        }
+    }
+    
+    private func FButton() -> some View {
+        FloatingButton {
+            FloatingAction(symbol: "plus") {
+                addItem()
+                print("add item")
+            }
+            FloatingAction(symbol: "plus") {
+                print("edit")
+            }
+        } label: { isExpanded in
+            Image(systemName: "plus")
+                .font(.title3)
+                .fontWidth(.standard)
+                .foregroundStyle(.white)
+                .rotationEffect(.init(degrees: isExpanded ? 45 : 0))
+                .scaleEffect(1.02)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(.black, in: .circle)
+            // Scaling effect when expanded
+                .scaleEffect(isExpanded ? 0.9 : 1)
+        }
+        .padding()
     }
 }
 
@@ -88,6 +113,12 @@ struct CustomSearchBar: View {
 }
 
 
+
 #Preview {
     AllView()
+        .modelContainer(for: Item.self, inMemory: true)
+}
+#Preview {
+    ContentView()
+        .modelContainer(for: Item.self, inMemory: true)
 }
