@@ -39,73 +39,37 @@ struct HomeView: View {
             }
             .foregroundStyle(.primary)
             .padding(15)
-            
-            TabBar()
-            
-            GeometryReader {
-                let size = $0.size
+                        
+            TabView(selection: $selectedTab) {
+                NavigationView {
+                    AllView()
+                }
+                .tag(0)
+                .tabItem {
+                    Label(
+                        title: { Text("All") },
+                        icon: { Image(systemName: "list.bullet.rectangle.portrait") }
+                    )
+                }
+                .navigationViewStyle(.stack)
                 
-                ScrollView(.horizontal) {
-                    LazyHStack(spacing: 0) {
-                        AllView()
-                            .id(Tab.all)
-                            .containerRelativeFrame(.horizontal)
-                        CategoryView()
-                            .id(Tab.categories)
-                            .containerRelativeFrame(.horizontal)
-                        SettingView()
-                            .id(Tab.settings)
-                            .containerRelativeFrame(.horizontal)
+                CategoryView()
+                    .tag(1)
+                    .tabItem {
+                        Label(
+                            title: { Text("Category") },
+                            icon: { Image(systemName: "folder") }
+                        )
                     }
-                    .scrollTargetLayout()
-                    .offsetX { value in
-                        // converting Offset into progress
-                        let progress = -value / (size.width * CGFloat(Tab.allCases.count - 1))
-                        tabProgress = max(min(progress, 1), 0)
-                        print(value)
+                SettingView()
+                    .tag(2)
+                    .tabItem {
+                        Label(
+                            title: { Text("Setting") },
+                            icon: { Image(systemName: "gear") }
+                        )
                     }
-                }
-                .scrollPosition(id: $selectedTab)
-                .scrollIndicators(.hidden)
-                .scrollTargetBehavior(.paging)
-                .scrollClipDisabled()
-            }
-            
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .background(.gray.opacity(0.1))
-    }
-    
-    @ViewBuilder
-    func TabBar() -> some View {
-        HStack(spacing: 0) {
-            ForEach(Tab.allCases, id: \.rawValue) { tab in
-                HStack(spacing: 10) {
-                    Image(systemName: tab.systemImage)
-                    Text(tab.rawValue)
-                        .font(.callout)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 10)
-                .contentShape(.capsule)
-                .onTapGesture {
-                    //updating tab
-                    withAnimation(.snappy) {
-                        selectedTab = tab
-                    }
-                }
-            }
-        }
-        .tabMask(tabProgress)
-        .background {
-            GeometryReader {
-                let size = $0.size
-                let capsuleWidth = size.width / CGFloat(Tab.allCases.count)
                 
-                Capsule()
-                    .fill(scheme == .dark ? .black : .white)
-                    .frame(width: capsuleWidth)
-                    .offset(x: tabProgress * (size.width - capsuleWidth))
             }
         }
         .background(.gray.opacity(0.1), in: .capsule)
