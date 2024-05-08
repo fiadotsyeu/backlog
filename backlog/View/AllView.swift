@@ -34,17 +34,9 @@ struct AllView: View {
                     }
                     .onDelete(perform: deleteItems)
                 }
-                .padding(.horizontal, 20)
             }
-            
-            .scrollClipDisabled()
-            .background(.gray.opacity(0.1))
             .scrollIndicators(.hidden)
-            .mask {
-                Rectangle()
-                    .padding(.bottom, -100)
-                    .background(.black)
-            }
+            .environment(\.editMode, .constant(self.isEditing ? EditMode.active : EditMode.inactive))
             .overlay(alignment: .bottomTrailing) {
                 FButton()
             }
