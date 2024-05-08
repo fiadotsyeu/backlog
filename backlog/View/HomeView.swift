@@ -9,15 +9,10 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
-    @State private var selectedTab: Tab?
+    @State private var selectedTab = 0
     @Environment(\.colorScheme) private var scheme
-    @State private var tabProgress: CGFloat = 0
-    @State private var searchText = ""
     @Query private var items: [Item]
 
-    private var searchResults : [Item] {
-        searchText.isEmpty ? items : items.filter { $0.title.contains(searchText) }
-    }
     
     var body: some View {
         VStack(spacing: 15) {
@@ -37,7 +32,6 @@ struct HomeView: View {
                 Text("BackLog")
                     .font(.title.bold())
             }
-            .foregroundStyle(.primary)
             .padding(15)
                         
             TabView(selection: $selectedTab) {
@@ -71,15 +65,16 @@ struct HomeView: View {
                     }
                 
             }
+            .ignoresSafeArea()
+            .tabViewStyle(.page(indexDisplayMode: .always))
+            .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
         }
-        .background(.gray.opacity(0.1), in: .capsule)
-        .padding(.horizontal, 15)
     }
-    
-    
-    
 }
+
+
 
 #Preview {
     ContentView()
+        .modelContainer(for: Item.self, inMemory: true)
 }
