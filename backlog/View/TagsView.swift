@@ -8,10 +8,11 @@
 import SwiftUI
 import SwiftData
 
-struct CategoryView: View {
+struct TagsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
-    
+    @State private var searchText = ""
+
     
     var body: some View {
         ScrollView(.vertical) {
@@ -44,5 +45,6 @@ struct CategoryView: View {
 }
 
 #Preview {
-    CategoryView()
+    TagsView()
+        .modelContainer(for: Item.self, inMemory: true)
 }

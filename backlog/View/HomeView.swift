@@ -47,7 +47,7 @@ struct HomeView: View {
                 }
                 .navigationViewStyle(.stack)
                 
-                CategoryView()
+                TagsView()
                     .tag(1)
                     .tabItem {
                         Label(
