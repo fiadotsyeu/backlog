@@ -12,30 +12,27 @@ struct AllView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     @State private var searchText = ""
+    @State var isEditing = false
+    @State var symbol: String = "minus"
+    @State  var count = 0
+
     
     private var searchResults : [Item] {
         searchText.isEmpty ? items : items.filter { $0.title.contains(searchText) }
     }
 
     var body: some View {
-        NavigationStack {
-            ScrollView(.vertical) {
-                
+        NavigationView {
+            VStack {
                 CustomSearchBar(searchText: $searchText)
-                    .padding(.vertical, 6)
-                
-                ForEach(searchResults, id: \.self) { item in
-                    NavigationLink(destination: DetailView(item: item), label: {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color(.white))
-                            .frame(height: 50)
-                            .overlay {
-                                VStack(alignment: .leading) {
-                                    Text(item.date, format: Date.FormatStyle(date:
-                                            .numeric, time: .standard))
-                                }
-                            }
-                    })
+                    .padding(.vertical, 8)
+                List {
+                    ForEach(searchResults, id: \.self) { item in
+                        NavigationLink(destination: DetailView(item: item)) {
+                            Text("Item at \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        }
+                    }
+                    .onDelete(perform: deleteItems)
                 }
                 .padding(.horizontal, 20)
             }
