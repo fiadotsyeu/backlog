@@ -79,8 +79,10 @@ struct AllView: View {
                 addItem()
                 print("add item")
             }
-            FloatingAction(symbol: "plus") {
-                print("edit")
+            FloatingAction(symbol: symbol) {
+                count += 1
+                self.isEditing.toggle()
+                symbol = count % 2 == 0 ? "minus" : "plus"
             }
         } label: { isExpanded in
             Image(systemName: "plus")
