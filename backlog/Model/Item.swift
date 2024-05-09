@@ -10,21 +10,21 @@ import SwiftData
 
 @Model
 final class Item {
-    var id: String
+    let id: String
     var title: String
-    var subTitle: String
+    var subTitle: String?
     var body: String
     var date: Date
-    var category: String
+    var tags: [Tag]
     var isFavorit: Bool
     
-    init(title: String, subTitle: String, body: String, date: Date, category: String) {
+    init(title: String, subTitle: String?, body: String, tags: [Tag]) {
         self.id = UUID().uuidString
         self.title = title
         self.subTitle = subTitle
         self.body = body
         self.date = Date.now
-        self.category = category
+        self.tags = tags
         self.isFavorit = false
     }
 }
