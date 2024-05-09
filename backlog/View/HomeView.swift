@@ -9,9 +9,14 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
-    @State private var selectedTab = 0
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var scheme
     @Query private var items: [Item]
+    @State private var selectedTab = 0
+    @State var count = 0
+    @State var symbol: String = "minus"
+    @AppStorage("isAddItem") var isAddItem = false
+    @AppStorage("isEditing") var isEditing = false
 
     
     var body: some View {
@@ -46,15 +51,17 @@ struct HomeView: View {
                     )
                 }
                 .navigationViewStyle(.stack)
-                
-                TagsView()
-                    .tag(1)
-                    .tabItem {
-                        Label(
-                            title: { Text("Category") },
-                            icon: { Image(systemName: "folder") }
-                        )
-                    }
+                ScrollView {
+                    TagContainerView()
+                }
+                .tag(1)
+                .tabItem {
+                    Label(
+                        title: { Text("Category") },
+                        icon: { Image(systemName: "folder") }
+                    )
+                }
+                .padding(10)
                 SettingView()
                     .tag(2)
                     .tabItem {
@@ -69,6 +76,39 @@ struct HomeView: View {
             .tabViewStyle(.page(indexDisplayMode: .always))
             .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
         }
+        .overlay(alignment: .bottomTrailing) {
+            if selectedTab != 2 {
+                FButton()
+                    .padding(.bottom, 25)
+                    .padding(.trailing, 20)
+            }
+        }
+        .animation(.easeInOut, value: 0.35)
+    }
+    
+    private func FButton() -> some View {
+        FloatingButton {
+            FloatingAction(symbol: "plus") {
+                isAddItem.toggle()
+            }
+            FloatingAction(symbol: symbol) {
+                count += 1
+                isEditing.toggle()
+                symbol = count % 2 == 0 ? "minus" : "plus"
+            }
+        } label: { isExpanded in
+            Image(systemName: "plus")
+                .font(.title3)
+                .fontWidth(.standard)
+                .foregroundStyle(.white)
+                .rotationEffect(.init(degrees: isExpanded ? 45 : 0))
+                .scaleEffect(1.02)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(.black, in: .circle)
+            // Scaling effect when expanded
+                .scaleEffect(isExpanded ? 0.9 : 1)
+        }
+        .padding()
     }
 }
 
