@@ -12,9 +12,8 @@ struct AllView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     @State private var searchText = ""
-    @State var isEditing = false
-    @State var symbol: String = "minus"
-    @State  var count = 0
+    @AppStorage("isEditing") var isEditing = false
+    @AppStorage("isAddItem") var isAddItem = false
 
     
     private var searchResults : [Item] {
@@ -37,10 +36,11 @@ struct AllView: View {
             }
             .scrollIndicators(.hidden)
             .environment(\.editMode, .constant(self.isEditing ? EditMode.active : EditMode.inactive))
-            .overlay(alignment: .bottomTrailing) {
-                FButton()
+            .onChange(of: isAddItem) {
+                addItem()
             }
         }
+        .navigationViewStyle(.stack)
     }
     
     
@@ -60,32 +60,6 @@ struct AllView: View {
                 modelContext.delete(items[index])
             }
         }
-    }
-    
-    private func FButton() -> some View {
-        FloatingButton {
-            FloatingAction(symbol: "plus") {
-                addItem()
-                print("add item")
-            }
-            FloatingAction(symbol: symbol) {
-                count += 1
-                self.isEditing.toggle()
-                symbol = count % 2 == 0 ? "minus" : "plus"
-            }
-        } label: { isExpanded in
-            Image(systemName: "plus")
-                .font(.title3)
-                .fontWidth(.standard)
-                .foregroundStyle(.white)
-                .rotationEffect(.init(degrees: isExpanded ? 45 : 0))
-                .scaleEffect(1.02)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(.black, in: .circle)
-            // Scaling effect when expanded
-                .scaleEffect(isExpanded ? 0.9 : 1)
-        }
-        .padding()
     }
 }
 
