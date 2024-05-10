@@ -17,6 +17,7 @@ struct HomeView: View {
     @State var symbol: String = "minus"
     @AppStorage("isAddItem") var isAddItem = false
     @AppStorage("isEditing") var isEditing = false
+    @State private var showingSheet = false
 
     
     var body: some View {
@@ -84,6 +85,10 @@ struct HomeView: View {
             }
         }
         .animation(.easeInOut, value: 0.35)
+        .sheet(isPresented: $showingSheet) {
+            SheetViewItem()
+                .presentationDetents([.medium])
+        }
     }
     
     private func FButton() -> some View {
@@ -95,6 +100,9 @@ struct HomeView: View {
                 count += 1
                 isEditing.toggle()
                 symbol = count % 2 == 0 ? "minus" : "plus"
+            }
+            FloatingAction(symbol: "plus") {
+                showingSheet.toggle()
             }
         } label: { isExpanded in
             Image(systemName: "plus")
