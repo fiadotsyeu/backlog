@@ -72,8 +72,17 @@ struct CustomSearchBar: View {
             Image(systemName: "magnifyingglass")
             TextField("Search", text: $searchText)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+            Button(action: { hideKeyboard() }, label: {
+                Text("Cancel")
+            })
+
         }
         .padding(.horizontal)
+    }
+    
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        searchText = ""
     }
 }
 
