@@ -51,7 +51,7 @@ struct TagContainerView: View {
         return GeometryReader { geo in
             ZStack(alignment: .topLeading, content: {
                 ForEach(tags) { tag in
-                    TagsView(systemImage: tag.systemImage ?? "bookmark.circle",
+                    TagsView(systemImage: tag.systemImage,
                              titleKey: tag.titleKey,
                              isSelected: tag.isSelected)
                     .padding(.all, 5)
