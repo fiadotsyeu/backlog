@@ -41,10 +41,10 @@ struct SheetView: View {
                     case .item:
                         TextField("Enter title", text: $newTitle)
                             .textContentType(.none)
-                            .focused($titleFieldIsFocused)
+                            .focused($isFocused)
                             .onAppear {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                    titleFieldIsFocused = true
+                                    isFocused = true
                                 }
                             }
                         TextField("Enter suubtitle", text: $newSubTitle)
@@ -57,10 +57,10 @@ struct SheetView: View {
                     case .tag:
                         TextField("Enter title Key", text: $newTitle)
                             .textContentType(.none)
-                            .focused($titleFieldIsFocused)
+                            .focused($isFocused)
                             .onAppear {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                    titleFieldIsFocused = true
+                                    isFocused = true
                                 }
                             }
                         Picker("Select a image", selection: $selectedTag) {
