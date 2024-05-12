@@ -13,14 +13,15 @@ struct SheetView: View {
     @Environment(\.dismiss) private var dismiss
     @Query private var items: [Item]
     @Query private var tags: [Tag]
-    @FocusState private var titleFieldIsFocused: Bool
+    @FocusState private var isFocused: Bool
 
     @State private var newTitle: String = ""
     @State private var newSubTitle: String = ""
     @State private var newBody: String = ""
     @State private var newTag: [Tag] = [Tag(systemImage: "bookmark.circle", titleKey: "Framevorks", items: nil)]
-    @State private var selectedTag = false
+    @State private var selectedTag = "doc.text"
     @State private var selectedCreationMode = CreationMode.item
+    @State private var imageList = ["doc.text", "doc.text.below.ecg", "heart.text.square", "text.below.photo", "text.quote", "text.badge.star", "text.badge.checkmark", "text.badge.plus", "text.badge.minus", "folder", "folder.badge.person.crop", "square.grid.3x1.folder.badge.plus"]
     
     private enum CreationMode { case item, tag }
     
