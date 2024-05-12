@@ -86,7 +86,7 @@ struct HomeView: View {
         }
         .animation(.easeInOut, value: 0.35)
         .sheet(isPresented: $showingSheet) {
-            SheetViewItem()
+            SheetView()
                 .presentationDetents([.medium])
         }
     }
