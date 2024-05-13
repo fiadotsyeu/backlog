@@ -12,7 +12,7 @@ import SwiftData
 final class Item {
     let id: String
     var title: String
-    var subTitle: String?
+    var subTitle: String
     var body: String
     var date: Date
     var tags: [Tag]
