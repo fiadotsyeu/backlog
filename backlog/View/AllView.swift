@@ -28,7 +28,31 @@ struct AllView: View {
                 List {
                     ForEach(searchResults, id: \.self) { item in
                         NavigationLink(destination: DetailView(item: item)) {
-                            Text("Item at \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text(item.title)
+//                                    Text("Created in \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))") //or Updated in
+                                }
+                                ForEach(item.tags) { tag in
+                                    HStack(spacing: 4) {
+                                        Image.init(systemName: tag.systemImage).font(.system(size: 11))
+                                        Text(tag.titleKey).font(.system(size: 11)).lineLimit(1)
+                                    }
+                                    .bold()
+                                    .padding(.vertical, 2)
+                                    .padding(.leading, 2)
+                                    .padding(.trailing, 8)
+                                    .foregroundColor(tag.isSelected ? .white : .blue)
+                                    .background(tag.isSelected ? Color.blue : Color.white)
+                                    .cornerRadius(20)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .stroke(Color.blue, lineWidth: 1)
+                                    ).onTapGesture {
+//                                        isSelected.toggle()
+                                    }
+                                }
+                            }
                         }
                     }
                     .onDelete(perform: deleteItems)
