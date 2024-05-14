@@ -63,8 +63,9 @@ struct DetailView: View {
                 }
                 
                 ToolbarItemGroup(placement: .keyboard) {
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        Image(systemName: "checkmark") // done
+                    Button(action: { UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    }, label: {
+                        Image(systemName: "checkmark")
                     })
                     Spacer()
                     Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
