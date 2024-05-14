@@ -51,12 +51,12 @@ struct SheetView: View {
                         TextField("Enter suubtitle", text: $newSubTitle)
                             .textContentType(.none)
                         Picker("Select a tag", selection: $selectedTag) {
-                            ForEach(tags) { tag in
+                            ForEach(tags, id: \.self) { tag in
                                 Text(tag.titleKey)
                             }
                         }
                     case .tag:
-                        TextField("Enter title Key", text: $newTitle)
+                        TextField("Enter title Key", text: $newTitleKey)
                             .textContentType(.none)
                             .focused($isFocused)
                             .onAppear {
