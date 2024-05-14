@@ -82,7 +82,13 @@ struct SheetView: View {
                     })
                     .padding(.horizontal, 10)
                     Spacer()
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                    Button(action: { 
+                        if selectedCreationMode == .tag {
+                            addTag(image: selectedTagImage, titleKey: newTitleKey)
+                        } else if selectedCreationMode == .item {
+                            addItem(title: newTitle, subTitle: newSubTitle, body: newBody, tag: selectedTag)
+                        }
+                    }, label: {
                         Text("Save")
                             .font(.title3)
                             .foregroundColor(.green)
@@ -95,6 +101,26 @@ struct SheetView: View {
 //            .navigationBarTitleDisplayMode(.large)
         }
 
+    }
+    
+    private func addTag(image: String, titleKey: String) {
+        do {
+            let newTag = Tag(systemImage: image, titleKey: titleKey)
+            modelContext.insert(newTag)
+            try modelContext.save()
+        } catch {
+            print("Error: \(error)")
+        }
+    }
+    
+    private func addItem(title: String, subTitle: String, body: String, tag: Tag) {
+        do {
+            let newItem = Item(title: title, subTitle: subTitle, body: body, tag: tag)
+            modelContext.insert(newItem)
+            try modelContext.save()
+        } catch {
+            print("Error: \(error)")
+        }
     }
 }
 
