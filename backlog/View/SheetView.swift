@@ -18,10 +18,9 @@ struct SheetView: View {
     @State private var newTitle: String = ""
     @State private var newSubTitle: String = ""
     @State private var newBody: String = ""
-    @State private var newTag: [Tag] = [Tag(systemImage: "bookmark.circle", titleKey: "Framevorks", items: nil)]
-    @State private var selectedTag = "doc.text"
-    @State private var selectedCreationMode = CreationMode.item
-    @State private var imageList = ["doc.text", "doc.text.below.ecg", "heart.text.square", "text.below.photo", "text.quote", "text.badge.star", "text.badge.checkmark", "text.badge.plus", "text.badge.minus", "folder", "folder.badge.person.crop", "square.grid.3x1.folder.badge.plus"]
+    @State private var selectedTag: Tag = Tag(systemImage: "bookmark.circle", titleKey: "Work")
+    
+    @State private var imageList = ["folder.circle", "paperplane.circle", "paperplane.circle", "doc.circle", "apple.terminal.circle", "book.circle", "books.vertical.circle", "book.closed.circle", "newspaper.circle", "bookmark.circle", "graduationcap.circle", "backpack.circle", "paperclip.circle", "link.circle", "personalhotspot.circle", "person.circle", "shared.with.you.circle", "person.2.circle", "figure.fall.circle", "figure.run.circle", "trophy.circle", "command.circle", "restart.circle", "sleep.circle", "power.circle", "peacesign", "globe", "sun.min", "moon.circle", "cloud.circle", "tornado.circle", "flame.circle", "play.circle", "repeat.circle", "infinity.circle", "speaker.circle", "magnifyingglass.circle", "swirl.circle.righthalf.filled", "play.rectangle.on.rectangle.circle", "heart.circle", "star.circle", ]
     
     private enum CreationMode { case item, tag }
     
