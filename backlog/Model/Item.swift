@@ -15,17 +15,17 @@ final class Item {
     var subTitle: String
     var body: String
     var date: Date
-    var tags: [Tag]
+    var tag: Tag
     var isFavorit: Bool
     var isPinned: Bool
     
-    init(title: String, subTitle: String, body: String, tags: [Tag]) {
+    init(title: String, subTitle: String, body: String, tag: Tag) {
         self.id = UUID().uuidString
         self.title = title
         self.subTitle = subTitle
         self.body = body
         self.date = Date.now
-        self.tags = tags
+        self.tag = tag
         self.isFavorit = false
         self.isPinned = false
     }
