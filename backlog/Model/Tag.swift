@@ -16,11 +16,11 @@ final class Tag {
     var titleKey: String
     var items: [Item]?
     
-    init(systemImage: String, titleKey: String, items: [Item]?) {
+    init(systemImage: String, titleKey: String) {
         self.id = UUID().uuidString
         self.isSelected = false
         self.systemImage = systemImage
         self.titleKey = titleKey
-        self.items = items
+        self.items = nil
     }
 }
