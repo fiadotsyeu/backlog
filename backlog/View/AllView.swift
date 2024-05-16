@@ -17,7 +17,7 @@ struct AllView: View {
 
     
     private var searchResults : [Item] {
-        searchText.isEmpty ? items : items.filter { $0.title.contains(searchText.lowercased()) }
+        searchText.isEmpty ? items : items.filter { $0.title.localizedStandardContains(searchText) }
     }
 
     var body: some View {
