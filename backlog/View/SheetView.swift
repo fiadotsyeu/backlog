@@ -70,31 +70,29 @@ struct SheetView: View {
                         }
                     }
                 }
-                
-                HStack {
-                    Button(action: { dismiss() }, label: {
-                        Text("Dismiss")
-                            .font(.title3)
-                            .foregroundColor(.red)
-                            .bold()
-                        
-                    })
-                    .padding(.horizontal, 10)
-                    Spacer()
-                    Button(action: { 
+                Section {
+                    Button(action: {
                         if selectedCreationMode == .tag {
                             addTag(image: selectedTagImage, titleKey: newTitleKey)
                         } else if selectedCreationMode == .item {
                             addItem(title: newTitle, subTitle: newSubTitle, body: newBody, tag: selectedTag)
                         }
+                        dismiss()
                     }, label: {
                         Text("Save")
                             .font(.title3)
                             .foregroundColor(.green)
-                            .bold()
                     })
-                    .padding(.horizontal, 10)
+                    .frame(maxWidth: .infinity)
                 }
+                Section {
+                    Button(action: { dismiss() }, label: {
+                        Text("Dismiss")
+                            .font(.title3)
+                            .foregroundColor(.red)
+                    })
+                }
+                .frame(maxWidth: .infinity)
             }
 //            .navigationTitle("Add new item")
 //            .navigationBarTitleDisplayMode(.large)
