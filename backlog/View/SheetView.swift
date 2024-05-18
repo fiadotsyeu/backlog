@@ -14,6 +14,10 @@ struct SheetView: View {
     @Query private var items: [Item]
     @Query private var tags: [Tag]
     @FocusState private var isFocused: Bool
+    @State private var selectedCreationMode = CreationMode.item
+
+    @State private var newTitleKey: String = ""
+    @State private var selectedTagImage = "folder.circle"
 
     @State private var newTitle: String = ""
     @State private var newSubTitle: String = ""
@@ -26,8 +30,6 @@ struct SheetView: View {
     
     
     var body: some View {
-        
-        var newItem = Item(title: newTitle, subTitle: newSubTitle, body: newBody, tags: newTag)
         
         VStack(alignment: .leading) {
             Form {
@@ -51,7 +53,7 @@ struct SheetView: View {
                             .textContentType(.none)
                         Picker("Select a tag", selection: $selectedTag) {
                             ForEach(tags, id: \.self) { tag in
-                                Text(tag.titleKey)
+                                Text(tag.titleKey).tag(tag)
                             }
                         }
                     case .tag:
@@ -63,11 +65,13 @@ struct SheetView: View {
                                     isFocused = true
                                 }
                             }
-                        Picker("Select a image", selection: $selectedTag) {
-                            ForEach(tags) { tag in
-                                Text(tag.titleKey)
+                        Picker("Select a image", selection: $selectedTagImage) {
+                            ForEach(imageList, id: \.self) { image in
+                                Image(systemName: image)
                             }
                         }
+                        .pickerStyle(.wheel)
+                        .frame(height: 130)
                     }
                 }
                 Section {
