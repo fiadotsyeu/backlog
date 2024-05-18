@@ -103,12 +103,22 @@ struct SheetView: View {
     }
     
     private func addTag(image: String, titleKey: String) {
-        do {
-            let newTag = Tag(systemImage: image, titleKey: titleKey)
-            modelContext.insert(newTag)
-            try modelContext.save()
-        } catch {
-            print("Error: \(error)")
+        var tagExists = false
+        for tag in tags {
+            if tag.titleKey.localizedStandardContains(titleKey) {
+                print("This tag already exists.")
+                tagExists = true
+                break
+            }
+        }
+        if !tagExists {
+            do {
+                let newTag = Tag(systemImage: image, titleKey: titleKey)
+                modelContext.insert(newTag)
+                try modelContext.save()
+            } catch {
+                print("Error: \(error)")
+            }
         }
     }
     
