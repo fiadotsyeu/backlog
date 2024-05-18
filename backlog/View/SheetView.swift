@@ -113,12 +113,24 @@ struct SheetView: View {
     }
     
     private func addItem(title: String, subTitle: String, body: String, tag: Tag) {
-        do {
-            let newItem = Item(title: title, subTitle: subTitle, body: body, tag: tag)
-            modelContext.insert(newItem)
-            try modelContext.save()
-        } catch {
-            print("Error: \(error)")
+        for tag in tags {
+            if tag.titleKey.localizedStandardContains(tag.titleKey) {
+                do {
+                    let newItem = Item(title: title, subTitle: subTitle, body: body, tag: tag.self)
+                    modelContext.insert(newItem)
+                    try modelContext.save()
+                } catch {
+                    print("Error: \(error)")
+                }
+            } else {
+                do {
+                    let newItem = Item(title: title, subTitle: subTitle, body: body, tag: tag)
+                    modelContext.insert(newItem)
+                    try modelContext.save()
+                } catch {
+                    print("Error: \(error)")
+                }
+            }
         }
     }
 }
