@@ -12,6 +12,7 @@ struct TagsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     @State private var searchText = ""
+    let tagColor: ColorModel
     let systemImage: String
     let titleKey: String
     @State var isSelected: Bool
@@ -25,12 +26,12 @@ struct TagsView: View {
         .padding(.vertical, 4)
         .padding(.leading, 4)
         .padding(.trailing, 10)
-        .foregroundColor(isSelected ? .white : .blue)
-        .background(isSelected ? Color.blue : Color.white)
+        .foregroundColor(isSelected ? .white : tagColor.swiftUIColor)
+        .background(isSelected ? tagColor.swiftUIColor : Color.white)
         .cornerRadius(20)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
-                .stroke(Color.blue, lineWidth: 1.5)
+                .stroke(tagColor.swiftUIColor, lineWidth: 1.5)
                 
         ).onTapGesture {
             isSelected.toggle()
@@ -51,7 +52,8 @@ struct TagContainerView: View {
         return GeometryReader { geo in
             ZStack(alignment: .topLeading, content: {
                 ForEach(tags) { tag in
-                    TagsView(systemImage: tag.systemImage,
+                    TagsView(tagColor: tag.color, 
+                             systemImage: tag.systemImage,
                              titleKey: tag.titleKey,
                              isSelected: tag.isSelected)
                     .padding(.all, 5)
@@ -83,7 +85,7 @@ struct TagContainerView: View {
 
 
 #Preview {
-    TagsView(systemImage: "heart.circle", titleKey: "Title", isSelected: false)
+    TagsView(tagColor: ColorModel.from(color: .red), systemImage: "heart.circle", titleKey: "Title", isSelected: false)
         .modelContainer(for: Item.self, inMemory: true)
         .previewLayout(.sizeThatFits)
         .padding()
