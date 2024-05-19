@@ -77,9 +77,9 @@ struct SheetView: View {
                 Section {
                     Button(action: {
                         if selectedCreationMode == .tag {
-                            addTag(image: selectedTagImage, titleKey: newTitleKey)
+                            addOrUpdateTag(image: selectedTagImage, titleKey: newTitleKey)
                         } else if selectedCreationMode == .item {
-                            addItem(title: newTitle, subTitle: newSubTitle, body: newBody, tag: selectedTag)
+                            addOrUpdateItem(title: newTitle, subTitle: newSubTitle, body: newBody, tag: selectedTag)
                         }
                         dismiss()
                     }, label: {
@@ -98,51 +98,37 @@ struct SheetView: View {
                 }
                 .frame(maxWidth: .infinity)
             }
-//            .navigationTitle("Add new item")
-//            .navigationBarTitleDisplayMode(.large)
         }
 
     }
     
-    private func addTag(image: String, titleKey: String) {
-        var tagExists = false
-        for tag in tags {
-            if tag.titleKey.localizedStandardContains(titleKey) {
-                print("This tag already exists.")
-                tagExists = true
-                break
-            }
+    private func addOrUpdateTag(image: String, titleKey: String) {
+        if let existingTag = tags.first(where: { $0.titleKey == titleKey }) {
+            existingTag.systemImage = image
+            print("This tag already exists.")
         }
-        if !tagExists {
-            do {
-                let newTag = Tag(systemImage: image, titleKey: titleKey)
-                modelContext.insert(newTag)
-                try modelContext.save()
-            } catch {
-                print("Error: \(error)")
-            }
+        do {
+            let newTag = Tag(systemImage: image, titleKey: titleKey)
+            modelContext.insert(newTag)
+            try modelContext.save()
+        } catch {
+            print("Error: \(error)")
         }
     }
+
     
-    private func addItem(title: String, subTitle: String, body: String, tag: Tag) {
-        for tag in tags {
-            if tag.titleKey.localizedStandardContains(tag.titleKey) {
-                do {
-                    let newItem = Item(title: title, subTitle: subTitle, body: body, tag: tag.self)
-                    modelContext.insert(newItem)
-                    try modelContext.save()
-                } catch {
-                    print("Error: \(error)")
-                }
-            } else {
-                do {
-                    let newItem = Item(title: title, subTitle: subTitle, body: body, tag: tag)
-                    modelContext.insert(newItem)
-                    try modelContext.save()
-                } catch {
-                    print("Error: \(error)")
-                }
-            }
+    private func addOrUpdateItem(title: String, subTitle: String, body: String, tag: Tag) {
+        if let existingItem = items.first(where: { $0.title == title }) {
+            if !subTitle.isEmpty { existingItem.subTitle += " + " + subTitle }
+            print("This item already exists.")
+        } else {
+            let newItem = Item(title: title, subTitle: subTitle, body: body, tag: tag.self)
+            modelContext.insert(newItem)
+        }
+        do {
+            try modelContext.save()
+        } catch {
+            print("Error: \(error)")
         }
     }
 }
