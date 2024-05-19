@@ -11,7 +11,7 @@ import SwiftData
 @Model
 final class Item {
     let id: String
-    var title: String
+    @Attribute(.unique) var title: String
     var subTitle: String
     var body: String
     var date: Date
