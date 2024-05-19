@@ -13,7 +13,7 @@ final class Tag {
     var isSelected: Bool
     let id: String
     var systemImage: String
-    var titleKey: String
+    @Attribute(.unique) var titleKey: String
     var items: [Item]?
     
     init(systemImage: String, titleKey: String) {
