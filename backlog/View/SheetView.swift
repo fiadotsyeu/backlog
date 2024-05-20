@@ -18,11 +18,12 @@ struct SheetView: View {
 
     @State private var newTitleKey: String = ""
     @State private var selectedTagImage = "folder.circle"
+    @State private var newTagColor = Color(.sRGB, red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1))
 
     @State private var newTitle: String = ""
     @State private var newSubTitle: String = ""
     @State private var newBody: String = ""
-    @State private var selectedTag: Tag = Tag(systemImage: "bookmark.circle", titleKey: "Work")
+    @State private var selectedTag: Tag = Tag(systemImage: "bookmark.circle", titleKey: "Work", color: ColorModel(color: .black))
     
     @State private var imageList = ["folder.circle", "paperplane.circle", "paperplane.circle", "doc.circle", "apple.terminal.circle", "book.circle", "books.vertical.circle", "book.closed.circle", "newspaper.circle", "bookmark.circle", "graduationcap.circle", "backpack.circle", "paperclip.circle", "link.circle", "personalhotspot.circle", "person.circle", "shared.with.you.circle", "person.2.circle", "figure.fall.circle", "figure.run.circle", "trophy.circle", "command.circle", "restart.circle", "sleep.circle", "power.circle", "peacesign", "globe", "sun.min", "moon.circle", "cloud.circle", "tornado.circle", "flame.circle", "play.circle", "repeat.circle", "infinity.circle", "speaker.circle", "magnifyingglass.circle", "swirl.circle.righthalf.filled", "play.rectangle.on.rectangle.circle", "heart.circle", "star.circle", ]
     
@@ -65,6 +66,9 @@ struct SheetView: View {
                                     isFocused = true
                                 }
                             }
+                        
+                        ColorPicker("Shoosen color", selection: $newTagColor)
+                        
                         Picker("Select a image", selection: $selectedTagImage) {
                             ForEach(imageList, id: \.self) { image in
                                 Image(systemName: image)
@@ -77,7 +81,7 @@ struct SheetView: View {
                 Section {
                     Button(action: {
                         if selectedCreationMode == .tag {
-                            addOrUpdateTag(image: selectedTagImage, titleKey: newTitleKey)
+                            addOrUpdateTag(image: selectedTagImage, titleKey: newTitleKey, color: ColorModel.from(color: newTagColor))
                         } else if selectedCreationMode == .item {
                             addOrUpdateItem(title: newTitle, subTitle: newSubTitle, body: newBody, tag: selectedTag)
                         }
