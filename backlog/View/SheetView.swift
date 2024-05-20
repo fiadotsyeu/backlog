@@ -102,14 +102,17 @@ struct SheetView: View {
 
     }
     
-    private func addOrUpdateTag(image: String, titleKey: String) {
+    private func addOrUpdateTag(image: String, titleKey: String, color: ColorModel) {
         if let existingTag = tags.first(where: { $0.titleKey == titleKey }) {
             existingTag.systemImage = image
             print("This tag already exists.")
+        } else {
+            var titleKey = titleKey
+            if titleKey.isEmpty { titleKey = "New Tag" }
+            let newTag = Tag(systemImage: image, titleKey: titleKey, color: color)
+            modelContext.insert(newTag)
         }
         do {
-            let newTag = Tag(systemImage: image, titleKey: titleKey)
-            modelContext.insert(newTag)
             try modelContext.save()
         } catch {
             print("Error: \(error)")
