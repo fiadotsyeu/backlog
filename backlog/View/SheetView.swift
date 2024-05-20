@@ -99,7 +99,11 @@ struct SheetView: View {
                 .frame(maxWidth: .infinity)
             }
         }
-
+        .onAppear {
+            if !tags.isEmpty {
+                selectedTag = tags[0]
+            }
+        }
     }
     
     private func addOrUpdateTag(image: String, titleKey: String, color: ColorModel) {
