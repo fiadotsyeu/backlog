@@ -129,11 +129,13 @@ struct SheetView: View {
 
     
     private func addOrUpdateItem(title: String, subTitle: String, body: String, tag: Tag) {
+        var title = title
         if let existingItem = items.first(where: { $0.title == title }) {
             if !subTitle.isEmpty { existingItem.subTitle += " + " + subTitle }
             print("This item already exists.")
         } else {
-            let newItem = Item(title: title, subTitle: subTitle, body: body, tag: tag.self)
+            if title.isEmpty { title = "New Item" }
+            let newItem = Item(title: title, subTitle: subTitle, body: body, tag: tag)
             modelContext.insert(newItem)
         }
         do {
