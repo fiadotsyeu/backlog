@@ -102,7 +102,8 @@ struct DetailView: View {
                     }
                     
                     Button {
-                        
+                        modelContext.delete(item)
+                        presentationMode.wrappedValue.dismiss()
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
