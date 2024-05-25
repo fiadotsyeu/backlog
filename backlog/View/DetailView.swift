@@ -77,7 +77,7 @@ struct DetailView: View {
             ToolbarItem(id: "secondaryAction", placement: .navigationBarTrailing) {
                 Menu {
                     Button {
-                        
+                        item.isFavorit.toggle()
                     } label: {
                         if item.isFavorit {
                             Label("Unfavorite", systemImage: "bookmark.fill")
@@ -93,6 +93,12 @@ struct DetailView: View {
                     
                     Button {
                         
+                    } label: {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
+                    
+                    Button {
+                        item.isPinned.toggle()
                     } label: {
                         if item.isPinned {
                             Label("Unpin", systemImage: "pin.fill")
