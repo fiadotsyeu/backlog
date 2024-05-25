@@ -69,13 +69,7 @@ struct SheetView: View {
                         
                         ColorPicker("Shoosen color", selection: $newTagColor)
                         
-                        Picker("Select a image", selection: $selectedTagImage) {
-                            ForEach(imageList, id: \.self) { image in
-                                Image(systemName: image)
-                            }
-                        }
-                        .pickerStyle(.wheel)
-                        .frame(height: 130)
+                        CustomPicker(selectedItem: $selectedTagImage, items: imageList) 
                     }
                 }
                 Section {
