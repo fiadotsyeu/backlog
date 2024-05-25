@@ -49,34 +49,60 @@ struct AllView: View {
                                         RoundedRectangle(cornerRadius: 20)
                                             .stroke(Color.blue, lineWidth: 1)
                                     ).onTapGesture {
-//                                        isSelected.toggle()
+                                        isSelected.toggle()
+                                    }
+                                }
+                            }
+                            .contextMenu {
+                                Button {
+                                    item.isFavorit.toggle()
+                                } label: {
+                                    if item.isFavorit {
+                                        Label("Unfavorite", systemImage: "bookmark.fill")
+                                    } else {
+                                        Label("Favorite", systemImage: "bookmark")
+                                    }
+                                }
+                                
+                                Button {
+                                    item.isPinned.toggle()
+                                } label: {
+                                    if item.isPinned {
+                                        Label("Unpin", systemImage: "pin.fill")
+                                    } else {
+                                        Label("Pin", systemImage: "pin")
+                                    }
+                                }
+                                
+                                Button {
+                                    
+                                } label: {
+                                    Label("Share", systemImage: "square.and.arrow.up")
+                                }
+                                                                
+                                Button(role: .destructive) {
+                                    modelContext.delete(item)
+                                } label: {
+                                    HStack {
+                                        Label("Delete", systemImage: "trash")
+                                            .tint(.red)
                                     }
                                 }
                             }
                         }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    .onDelete(perform: deleteItems)
                 }
+                .listStyle(.plain)
+                .animation(.default, value: searchResults)
             }
             .scrollIndicators(.hidden)
-            .environment(\.editMode, .constant(self.isEditing ? EditMode.active : EditMode.inactive))
-            .onChange(of: isAddItem) {
-                addItem()
-            }
+        } detail: {
         }
         .navigationViewStyle(.stack)
     }
     
     
-    private func addItem() {
-        withAnimation {
-            for _ in 0..<15 {
-                let newItem = Item(title: "swiftUI", subTitle: "subTitle", body: "body", category: "framevorks")
-                modelContext.insert(newItem)
-                try? modelContext.save()
-            }
-        }
-    }
     
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
@@ -84,29 +110,6 @@ struct AllView: View {
                 modelContext.delete(items[index])
             }
         }
-    }
-}
-
-
-struct CustomSearchBar: View {
-    @Binding var searchText: String
-
-    var body: some View {
-        HStack {
-            Image(systemName: "magnifyingglass")
-            TextField("Search", text: $searchText)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-            Button(action: { hideKeyboard() }, label: {
-                Text("Cancel")
-            })
-
-        }
-        .padding(.horizontal)
-    }
-    
-    private func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        searchText = ""
     }
 }
 
