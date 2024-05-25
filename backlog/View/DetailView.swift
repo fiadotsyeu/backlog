@@ -15,75 +15,99 @@ struct DetailView: View {
     
     
     var body: some View {
-            VStack {
-                TextField("Title", text: $item.title)
-                    .focused($isInputActive)
+        VStack {
+            TextField("Title", text: $item.title)
+                .focused($isInputActive)
+                .padding([.leading, .trailing], 15)
+                .padding(.vertical, 5)
+            Divider()
+            TextField("Subtitle", text: $item.subTitle)
+                .focused($isInputActive)
+                .padding([.leading, .trailing], 15)
+                .padding(.vertical, 5)
+            Divider()
+            ScrollView {
+                TextField("Body", text: $item.body, axis: .vertical)
+                    .frame(maxWidth: .infinity)
                     .padding([.leading, .trailing], 15)
                     .padding(.vertical, 5)
-                Divider()
-                TextField("Title", text: $item.subTitle)
-                    .focused($isInputActive)
-                    .padding([.leading, .trailing], 15)
-                    .padding(.vertical, 5)
-                Divider()
-                ScrollView {
-                    TextField("Body", text: $item.body, axis: .vertical)
-                        .frame(maxWidth: .infinity)
-                        .padding([.leading, .trailing], 15)
-                        .padding(.vertical, 5)
-                        .lineLimit(20, reservesSpace: true)
-                    Spacer()
-                }
-                
+                    .lineLimit(lineLImit, reservesSpace: true)
+                    .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
+                        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                            self.keyboardHeight = keyboardFrame.height
+                            print(keyboardFrame.height)
+                        }
+                    }
+                    .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                        self.keyboardHeight = 0
+                    }
+                Spacer()
             }
-            .toolbar {
-                ToolbarItemGroup {
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+            //                                    Text("Created in \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))") //or Updated in
+        }
+        .navigationTitle(item.title)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Button(action: { UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                }, label: {
+                    Image(systemName: "checkmark")
+                })
+                Spacer()
+                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                    Image(systemName: "checklist")
+                })
+                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                    Image(systemName: "list.bullet")
+                })
+                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                    Image(systemName: "tablecells")
+                })
+                Spacer()
+                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                    Image(systemName: "arrow.uturn.backward")
+                })
+                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                    Image(systemName: "arrow.uturn.right")
+                })
+            }
+        }
+        
+        .toolbar(id: "secondaryAction") {
+            ToolbarItem(id: "secondaryAction", placement: .navigationBarTrailing) {
+                Menu {
+                    Button {
+                        
+                    } label: {
                         if item.isFavorit {
-                            Image(systemName: "bookmark.fill")
+                            Label("Unfavorite", systemImage: "bookmark.fill")
                         } else {
-                            Image(systemName: "bookmark")
+                            Label("Favorite", systemImage: "bookmark")
                         }
-                    })
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        Image(systemName: "square.and.arrow.up")
-                    })
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        if item.isPined {
-                            Image(systemName: "pin.fill")
+                    }
+                    Button {
+                        
+                    } label: {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
+                    
+                    Button {
+                        
+                    } label: {
+                        if item.isPinned {
+                            Label("Unpin", systemImage: "pin.fill")
                         } else {
-                            Image(systemName: "pin")
+                            Label("Pin", systemImage: "pin")
                         }
-                    })
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        Image(systemName: "trash")
-                            .accentColor(.red)
-                    })
-                    .padding(.horizontal, 15)
-                }
-                
-                ToolbarItemGroup(placement: .keyboard) {
-                    Button(action: { UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                    }, label: {
-                        Image(systemName: "checkmark")
-                    })
-                    Spacer()
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        Image(systemName: "checklist")
-                    })
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        Image(systemName: "list.bullet")
-                    })
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        Image(systemName: "tablecells")
-                    })
-                    Spacer()
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        Image(systemName: "arrow.uturn.backward")
-                    })
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        Image(systemName: "arrow.uturn.right")
-                    })
+                    }
+                    
+                    Button {
+                        
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                } label: {
+                    Label("secondaryAction", systemImage: "ellipsis.circle")
                 }
             }
         
