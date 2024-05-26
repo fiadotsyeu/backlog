@@ -8,11 +8,84 @@
 import SwiftUI
 
 struct ItemRow: View {
+    @Environment(\.modelContext) private var modelContext
+    @State var item: Item
+    @State private var isSelected = false
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .leading) {
+            HStack {
+                Text(item.title)
+                Spacer()
+                HStack(spacing: 4) {
+                    Image.init(systemName: item.tag.systemImage).font(.system(size: 11))
+                    Text(item.tag.titleKey).font(.system(size: 11)).lineLimit(1)
+                }
+                .padding(.vertical, 2)
+                .padding(.leading, 2)
+                .padding(.trailing, 8)
+                .foregroundColor(item.tag.isSelected ? .white : .blue)
+                .background(item.tag.isSelected ? Color.blue : Color.white)
+                .cornerRadius(20)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color.blue, lineWidth: 1)
+                ).onTapGesture {
+                    isSelected.toggle()
+                }
+            }
+            
+            HStack {
+                Image(systemName: item.isFavorit ? "bookmark.fill" : "bookmark")
+                Image(systemName: item.isPinned ? "pin.fill" : "pin")
+                
+                Spacer()
+                
+                Text("Created in \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))") //or Updated in
+            }
+            .font(.system(size: 9))
+
+            
+            .contextMenu {
+                Button {
+                    item.isFavorit.toggle()
+                } label: {
+                    if item.isFavorit {
+                        Label("Unfavorite", systemImage: "bookmark.fill")
+                    } else {
+                        Label("Favorite", systemImage: "bookmark")
+                    }
+                }
+                
+                Button {
+                    item.isPinned.toggle()
+                } label: {
+                    if item.isPinned {
+                        Label("Unpin", systemImage: "pin.fill")
+                    } else {
+                        Label("Pin", systemImage: "pin")
+                    }
+                }
+                
+                Button {
+                    
+                } label: {
+                    Label("Share", systemImage: "square.and.arrow.up")
+                }
+                
+                Button(role: .destructive) {
+                    modelContext.delete(item)
+                } label: {
+                    HStack {
+                        Label("Delete", systemImage: "trash")
+                            .tint(.red)
+                    }
+                }
+            }
+        }
     }
 }
 
-#Preview {
-    ItemRow()
-}
+//#Preview {
+//    ItemRow()
+//}
