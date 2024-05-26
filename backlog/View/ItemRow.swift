@@ -10,7 +10,6 @@ import SwiftUI
 struct ItemRow: View {
     @Environment(\.modelContext) private var modelContext
     @State var item: Item
-    @State private var isSelected = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -24,15 +23,12 @@ struct ItemRow: View {
                 .padding(.vertical, 2)
                 .padding(.leading, 2)
                 .padding(.trailing, 8)
-                .foregroundColor(item.tag.isSelected ? .white : .blue)
-                .background(item.tag.isSelected ? Color.blue : Color.white)
+                .foregroundColor(item.tag.color.swiftUIColor)
                 .cornerRadius(20)
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
-                        .stroke(Color.blue, lineWidth: 1)
-                ).onTapGesture {
-                    isSelected.toggle()
-                }
+                        .stroke(item.tag.color.swiftUIColor, lineWidth: 1)
+                )
             }
             
             HStack {
