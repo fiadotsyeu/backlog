@@ -18,8 +18,9 @@ final class Item {
     var tag: Tag
     var isFavorit: Bool
     var isPinned: Bool
+    var url: String
     
-    init(title: String, subTitle: String, body: String, tag: Tag) {
+    init(title: String, subTitle: String, body: String, tag: Tag, url: String) {
         self.id = UUID().uuidString
         self.title = title
         self.subTitle = subTitle
@@ -28,5 +29,6 @@ final class Item {
         self.tag = tag
         self.isFavorit = false
         self.isPinned = false
+        self.url = url
     }
 }
