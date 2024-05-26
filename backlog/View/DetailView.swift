@@ -16,15 +16,60 @@ struct DetailView: View {
     
     var body: some View {
         VStack {
-            TextField("Title", text: $item.title)
-                .focused($isInputActive)
-                .padding([.leading, .trailing], 15)
-                .padding(.vertical, 5)
+            HStack {
+                Text("Created in \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))") //or Updated in
+                    .font(.caption)
+            }
+
             Divider()
-            TextField("Subtitle", text: $item.subTitle)
-                .focused($isInputActive)
-                .padding([.leading, .trailing], 15)
-                .padding(.vertical, 5)
+            
+            HStack {
+                Text("Title:")
+                    .foregroundColor(.gray)
+                TextField("...", text: $item.title)
+                    .focused($isInputActive)
+                    .padding(.vertical, 5)
+            }
+            .padding([.leading, .trailing], 15)
+            
+            Divider()
+            
+            DisclosureGroup(
+                isExpanded: $isExpanded,
+                content: {
+                    HStack {
+                        Text("Subtitle:")
+                            .foregroundColor(.gray)
+                        TextField("...", text: $item.subTitle)
+                            .focused($isInputActive)
+                            .padding(.vertical, 5)
+                    }
+                    
+                    Divider()
+                    
+                    HStack {
+                        Text("URL:")
+                            .foregroundColor(.gray)
+                        TextField("...", text: $item.url)
+                            .focused($isInputActive)
+                            .padding(.vertical, 5)
+                        Link(destination: URL(string: item.url) ?? URL(string: "blank")!) {
+                            Image(systemName: "link.circle")
+                                .font(.system(size: 23))
+                        }
+                    }
+                    
+                }, label: {
+                    HStack {
+                        withAnimation(.easeOut){
+                            Text(isExpanded ? "Hide additional fields." : "Show additional fields.")
+                                .font(.footnote)
+                        }
+                    }
+                }
+            )
+            .padding([.leading, .trailing], 15)
+            
             Divider()
             ScrollView {
                 TextField("Body", text: $item.body, axis: .vertical)
@@ -43,7 +88,6 @@ struct DetailView: View {
                     }
                 Spacer()
             }
-            //                                    Text("Created in \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))") //or Updated in
         }
         .navigationTitle(item.title)
         .navigationBarTitleDisplayMode(.inline)
@@ -85,17 +129,6 @@ struct DetailView: View {
                             Label("Favorite", systemImage: "bookmark")
                         }
                     }
-                    Button {
-                        
-                    } label: {
-                        Label("Share", systemImage: "square.and.arrow.up")
-                    }
-                    
-                    Button {
-                        
-                    } label: {
-                        Label("Share", systemImage: "square.and.arrow.up")
-                    }
                     
                     Button {
                         item.isPinned.toggle()
@@ -108,6 +141,12 @@ struct DetailView: View {
                     }
                     
                     Button {
+                        
+                    } label: {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
+                                        
+                    Button(role: .destructive) {
                         modelContext.delete(item)
                         presentationMode.wrappedValue.dismiss()
                     } label: {
@@ -117,7 +156,7 @@ struct DetailView: View {
                     Label("secondaryAction", systemImage: "ellipsis.circle")
                 }
             }
-        
+        }
     }
 }
 
