@@ -13,10 +13,6 @@ struct HomeView: View {
     @Environment(\.colorScheme) private var scheme
     @Query private var items: [Item]
     @State private var selectedTab = 0
-    @State var count = 0
-    @State var symbol: String = "minus"
-    @AppStorage("isAddItem") var isAddItem = false
-    @AppStorage("isEditing") var isEditing = false
     @State private var showingSheet = false
 
     
@@ -93,15 +89,16 @@ struct HomeView: View {
     
     private func FButton() -> some View {
         FloatingButton {
-            FloatingAction(symbol: "plus") {
-                isAddItem.toggle()
+            FloatingAction(symbol: "trash") {
+                
             }
-            FloatingAction(symbol: symbol) {
-                count += 1
-                isEditing.toggle()
-                symbol = count % 2 == 0 ? "minus" : "plus"
+            FloatingAction(symbol: "archivebox") {
+                
             }
-            FloatingAction(symbol: "plus") {
+            FloatingAction(symbol: "bookmark") {
+                
+            }
+            FloatingAction(symbol: "square.badge.plus") {
                 showingSheet.toggle()
             }
         } label: { isExpanded in
