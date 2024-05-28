@@ -15,6 +15,7 @@ struct SheetView: View {
     @Query private var tags: [Tag]
     @FocusState private var isFocused: Bool
     @State private var selectedCreationMode = CreationMode.item
+    @State private var isCreate = false
 
     @State private var newTitleKey: String = ""
     @State private var selectedTagImage = "folder.circle"
@@ -25,7 +26,7 @@ struct SheetView: View {
     @State private var newBody: String = ""
     @State private var selectedTag: Tag = Tag(systemImage: "bookmark.circle", titleKey: "Work", color: ColorModel(color: .black))
     
-    @State private var imageList = ["folder.circle", "paperplane.circle", "paperplane.circle", "doc.circle", "apple.terminal.circle", "book.circle", "books.vertical.circle", "book.closed.circle", "newspaper.circle", "bookmark.circle", "graduationcap.circle", "backpack.circle", "paperclip.circle", "link.circle", "personalhotspot.circle", "person.circle", "shared.with.you.circle", "person.2.circle", "figure.fall.circle", "figure.run.circle", "trophy.circle", "command.circle", "restart.circle", "sleep.circle", "power.circle", "peacesign", "globe", "sun.min", "moon.circle", "cloud.circle", "tornado.circle", "flame.circle", "play.circle", "repeat.circle", "infinity.circle", "speaker.circle", "magnifyingglass.circle", "swirl.circle.righthalf.filled", "play.rectangle.on.rectangle.circle", "heart.circle", "star.circle", ]
+    @State private var imageList = ["folder.circle", "paperplane.circle", "doc.circle", "apple.terminal.circle", "book.circle", "books.vertical.circle", "book.closed.circle", "newspaper.circle", "bookmark.circle", "graduationcap.circle", "backpack.circle", "paperclip.circle", "link.circle", "personalhotspot.circle", "person.circle", "shared.with.you.circle", "person.2.circle", "figure.fall.circle", "figure.run.circle", "trophy.circle", "command.circle", "restart.circle", "sleep.circle", "power.circle", "peacesign", "globe", "sun.min", "moon.circle", "cloud.circle", "tornado.circle", "flame.circle", "play.circle", "repeat.circle", "infinity.circle", "speaker.circle", "magnifyingglass.circle", "swirl.circle.righthalf.filled", "play.rectangle.on.rectangle.circle", "heart.circle", "star.circle", "airplane.circle", "car.circle"]
     
     private enum CreationMode { case item, tag }
     
@@ -69,7 +70,7 @@ struct SheetView: View {
                         
                         ColorPicker("Shoosen color", selection: $newTagColor)
                         
-                        CustomPicker(selectedItem: $selectedTagImage, items: imageList) 
+                        СustomPicker(selectedItem: $selectedTagImage, items: imageList)
                     }
                 }
                 Section {
@@ -129,7 +130,7 @@ struct SheetView: View {
             print("This item already exists.")
         } else {
             if title.isEmpty { title = "New Item" }
-            let newItem = Item(title: title, subTitle: subTitle, body: body, tag: tag)
+            let newItem = Item(title: title, subTitle: subTitle, body: body, tag: tag, url: "")
             modelContext.insert(newItem)
         }
         do {
