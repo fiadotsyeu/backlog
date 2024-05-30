@@ -15,7 +15,7 @@ struct TagsView: View {
     let tagColor: ColorModel
     let systemImage: String
     let titleKey: String
-    @State var isSelected: Bool
+    @Binding var isSelected: Bool
     
     var body: some View {
         
@@ -45,40 +45,71 @@ struct TagContainerView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     @Query private var tags: [Tag]
+    @State private var selectedTag: Tag?
     
     var body: some View {
+        VStack {
         var width = CGFloat.zero
         var height = CGFloat.zero
-        return GeometryReader { geo in
-            ZStack(alignment: .topLeading, content: {
-                ForEach(tags) { tag in
-                    TagsView(tagColor: tag.color, 
-                             systemImage: tag.systemImage,
-                             titleKey: tag.titleKey,
-                             isSelected: tag.isSelected)
-                    .padding(.all, 5)
-                    .alignmentGuide(.leading) { dimension in
-                        if (abs(width - dimension.width) > geo.size.width) {
-                            width = 0
-                            height -= dimension.height
+            GeometryReader { geo in
+                ZStack(alignment: .topLeading) {
+                    ForEach(tags) { tag in
+                        TagsView(tagColor: tag.color,
+                                 systemImage: tag.systemImage,
+                                 titleKey: tag.titleKey,
+                                 isSelected: Binding(
+                                    get: { tag.isSelected },
+                                    set: { newValue in
+                                        if let index = tags.firstIndex(where: { $0.id == tag.id }) {
+                                            tags[index].isSelected = newValue
+                                            selectedTag = newValue ? tag : nil
+                                        }
+                                    }
+                                 )
+                        )
+                        .padding(5)
+                        .alignmentGuide(.leading) { dimension in
+                            if (abs(width - dimension.width) > geo.size.width) {
+                                width = 0
+                                height -= dimension.height
+                            }
+                            let result = width
+                            if tag.id == tags.last!.id {
+                                width = 0
+                            } else {
+                                width -= dimension.width
+                            }
+                            return result
                         }
-                        let result = width
-                        if tag.id == tags.last!.id {
-                            width = 0
-                        } else {
-                            width -= dimension.width
+                        .alignmentGuide(.top) { dimension in
+                            let result = height
+                            if tag.id == tags.last!.id {
+                                height = 0
+                            }
+                            return result
                         }
-                        return result
-                    }
-                    .alignmentGuide(.top) { dimension in
-                        let result = height
-                        if tag.id == tags.last!.id {
-                            height = 0
-                        }
-                        return result
                     }
                 }
-            })
+            }
+            
+            
+                        
+            if let selectedTag = selectedTag {
+                NavigationView {
+                    List {
+                        Section(header: Text(selectedTag.titleKey)) {
+                            ForEach(items.filter { $0.tag == selectedTag }) { it in
+                                NavigationLink(destination: DetailView(item: it)) {
+                                    ItemRow(item: it)
+                                }
+                            }
+                        }
+                    }
+                    .listStyle(.plain)
+                }
+                .scrollIndicators(.hidden)
+                .navigationViewStyle(.stack)
+            }
         }
     }
 }
