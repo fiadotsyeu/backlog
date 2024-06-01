@@ -95,7 +95,6 @@ struct TagContainerView: View {
                                     return result
                                 }
                             }
-                            return result
                         }
                     }
                 }
@@ -103,7 +102,7 @@ struct TagContainerView: View {
                 
                 if !selectedTags.isEmpty {
                     List {
-                        Section(header: Text("Filtered items")) {
+                        Section(header: Text(selectedTags.map { $0.titleKey }.joined(separator: ", ") )) {
                             ForEach(items.filter { item in
                                 selectedTags.contains(item.tag)
                             }, id: \.id) { item in
