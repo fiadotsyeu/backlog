@@ -20,7 +20,7 @@ struct TagsView: View {
     var body: some View {
         
         HStack(spacing: 4) {
-            Image.init(systemName: systemImage).font(.body)
+            Image(systemName: systemImage).font(.body)
             Text(titleKey).font(.body).lineLimit(1)
         }
         .padding(.vertical, 4)
@@ -32,85 +32,101 @@ struct TagsView: View {
         .overlay(
             RoundedRectangle(cornerRadius: 20)
                 .stroke(tagColor.swiftUIColor, lineWidth: 1.5)
-                
-        ).onTapGesture {
-            isSelected.toggle()
+        )
+        .onTapGesture {
+            withAnimation {
+                isSelected.toggle()
+            }
         }
-        
-        
-    } 
+    }
 }
 
 struct TagContainerView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     @Query private var tags: [Tag]
-    @State private var selectedTag: Tag?
-    
+    @State private var selectedTags: Set<Tag> = []
+
     var body: some View {
-        VStack {
-        var width = CGFloat.zero
-        var height = CGFloat.zero
-            GeometryReader { geo in
-                ZStack(alignment: .topLeading) {
-                    ForEach(tags) { tag in
-                        TagsView(tagColor: tag.color,
-                                 systemImage: tag.systemImage,
-                                 titleKey: tag.titleKey,
-                                 isSelected: Binding(
-                                    get: { tag.isSelected },
-                                    set: { newValue in
-                                        if let index = tags.firstIndex(where: { $0.id == tag.id }) {
-                                            tags[index].isSelected = newValue
-                                            selectedTag = newValue ? tag : nil
+        NavigationView {
+            VStack {
+                ScrollView {
+                    var width = CGFloat.zero
+                    var height = CGFloat.zero
+                    GeometryReader { geo in
+                        ZStack(alignment: .topLeading) {
+                            ForEach(tags) { tag in
+                                TagsView(
+                                    tagColor: tag.color,
+                                    systemImage: tag.systemImage,
+                                    titleKey: tag.titleKey,
+                                    isSelected: Binding(
+                                        get: { selectedTags.contains(tag) },
+                                        set: { newValue in
+                                            withAnimation {
+                                                if newValue {
+                                                    selectedTags.insert(tag)
+                                                } else {
+                                                    selectedTags.remove(tag)
+                                                }
+                                            }
                                         }
+                                    )
+                                )
+                                .padding(5)
+                                .alignmentGuide(.leading) { dimension in
+                                    if (abs(width - dimension.width) > geo.size.width) {
+                                        width = 0
+                                        height -= dimension.height
                                     }
-                                 )
-                        )
-                        .padding(5)
-                        .alignmentGuide(.leading) { dimension in
-                            if (abs(width - dimension.width) > geo.size.width) {
-                                width = 0
-                                height -= dimension.height
-                            }
-                            let result = width
-                            if tag.id == tags.last!.id {
-                                width = 0
-                            } else {
-                                width -= dimension.width
-                            }
-                            return result
-                        }
-                        .alignmentGuide(.top) { dimension in
-                            let result = height
-                            if tag.id == tags.last!.id {
-                                height = 0
+                                    let result = width
+                                    if tag.id == tags.last!.id {
+                                        width = 0
+                                    } else {
+                                        width -= dimension.width
+                                    }
+                                    return result
+                                }
+                                .alignmentGuide(.top) { dimension in
+                                    let result = height
+                                    if tag.id == tags.last!.id {
+                                        height = 0
+                                    }
+                                    return result
+                                }
                             }
                             return result
                         }
                     }
                 }
-            }
-            
-            
-                        
-            if let selectedTag = selectedTag {
-                NavigationView {
+                .frame(height: 200)
+                
+                if !selectedTags.isEmpty {
                     List {
-                        Section(header: Text(selectedTag.titleKey)) {
-                            ForEach(items.filter { $0.tag == selectedTag }) { it in
-                                NavigationLink(destination: DetailView(item: it)) {
-                                    ItemRow(item: it)
+                        Section(header: Text("Filtered items")) {
+                            ForEach(items.filter { item in
+                                selectedTags.contains(item.tag)
+                            }, id: \.id) { item in
+                                NavigationLink(destination: DetailView(item: item)) {
+                                    ItemRow(item: item)
                                 }
                             }
                         }
                     }
                     .listStyle(.plain)
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+                } else {
+                    Text("No items selected.")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .transition(.opacity)
+                    Spacer()
                 }
-                .scrollIndicators(.hidden)
-                .navigationViewStyle(.stack)
             }
+            .animation(.default, value: selectedTags)
         }
+        .scrollIndicators(.hidden)
+        .navigationViewStyle(.stack)
     }
 }
 
