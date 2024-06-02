@@ -47,12 +47,10 @@ struct SheetView: View {
                             .textContentType(.none)
                             .focused($isFocused)
                             .onAppear {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                DispatchQueue.main.asyncAfter(deadline: .now()) {
                                     isFocused = true
                                 }
                             }
-                        TextField("Enter suubtitle", text: $newSubTitle)
-                            .textContentType(.none)
                         Picker("Select a tag", selection: $selectedTag) {
                             ForEach(tags, id: \.self) { tag in
                                 Text(tag.titleKey).tag(tag)
@@ -63,7 +61,7 @@ struct SheetView: View {
                             .textContentType(.none)
                             .focused($isFocused)
                             .onAppear {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                DispatchQueue.main.asyncAfter(deadline: .now()) {
                                     isFocused = true
                                 }
                             }
@@ -125,16 +123,19 @@ struct SheetView: View {
     
     private func addOrUpdateItem(title: String, subTitle: String, body: String, tag: Tag) {
         var title = title
-        if let existingItem = items.first(where: { $0.title == title }) {
-            if !subTitle.isEmpty { existingItem.subTitle += " + " + subTitle }
+        if (items.first(where: { $0.title == title }) != nil) {
+            title = "\(title) \(count)"
             print("This item already exists.")
         } else {
-            if title.isEmpty { title = "New Item" }
+            if title.isEmpty {
+                title = "New Item \(count)"
+            }
             let newItem = Item(title: title, subTitle: subTitle, body: body, tag: tag, url: "")
             modelContext.insert(newItem)
         }
         do {
             try modelContext.save()
+            count += 1
         } catch {
             print("Error: \(error)")
         }
