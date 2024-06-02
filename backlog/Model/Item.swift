@@ -18,6 +18,7 @@ final class Item {
     var tag: Tag
     var isFavorit: Bool
     var isPinned: Bool
+    var isArchive: Bool
     var url: String
     
     init(title: String, subTitle: String, body: String, tag: Tag, url: String) {
@@ -29,6 +30,7 @@ final class Item {
         self.tag = tag
         self.isFavorit = false
         self.isPinned = false
+        self.isArchive = false
         self.url = url
     }
 }
