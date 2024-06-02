@@ -38,7 +38,8 @@ struct ItemRow: View {
                 
                 Spacer()
                 
-                Text("Created in \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))") //or Updated in
+                Text("\(item.createDate >= item.updateDate ? "Created" : "Updated") at \(item.createDate >= item.updateDate ? item.createDate : item.updateDate, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                    .font(.caption)
             }
             .font(.caption)
 

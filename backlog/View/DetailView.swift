@@ -17,7 +17,7 @@ struct DetailView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Created in \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))") //or Updated in
+                Text("\(item.createDate >= item.updateDate ? "Created" : "Updated") at \(item.createDate >= item.updateDate ? item.createDate : item.updateDate, format: Date.FormatStyle(date: .numeric, time: .standard))")
                     .font(.caption)
             }
 
@@ -26,7 +26,7 @@ struct DetailView: View {
             HStack {
                 Text("Title:")
                     .foregroundColor(.gray)
-                TextField("...", text: $item.title)
+                TextField("", text: $item.title)
                     .focused($isInputActive)
                     .padding(.vertical, 5)
             }
@@ -40,7 +40,7 @@ struct DetailView: View {
                     HStack {
                         Text("Subtitle:")
                             .foregroundColor(.gray)
-                        TextField("...", text: $item.subTitle)
+                        TextField("", text: $item.subTitle)
                             .focused($isInputActive)
                             .padding(.vertical, 5)
                     }
@@ -50,7 +50,7 @@ struct DetailView: View {
                     HStack {
                         Text("URL:")
                             .foregroundColor(.gray)
-                        TextField("...", text: $item.url)
+                        TextField("", text: $item.url)
                             .focused($isInputActive)
                             .padding(.vertical, 5)
                         Link(destination: URL(string: item.url) ?? URL(string: "blank")!) {
@@ -88,6 +88,9 @@ struct DetailView: View {
                     }
                 Spacer()
             }
+        }
+        .onChange(of: item.hasChanges) {
+            item.updateDate = Date.now
         }
         .navigationTitle(item.title)
         .navigationBarTitleDisplayMode(.inline)
