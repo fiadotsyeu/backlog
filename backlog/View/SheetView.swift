@@ -29,6 +29,7 @@ struct SheetView: View {
     @State private var imageList = ["folder.circle", "paperplane.circle", "doc.circle", "apple.terminal.circle", "book.circle", "books.vertical.circle", "book.closed.circle", "newspaper.circle", "bookmark.circle", "graduationcap.circle", "backpack.circle", "paperclip.circle", "link.circle", "personalhotspot.circle", "person.circle", "shared.with.you.circle", "person.2.circle", "figure.fall.circle", "figure.run.circle", "trophy.circle", "command.circle", "restart.circle", "sleep.circle", "power.circle", "peacesign", "globe", "sun.min", "moon.circle", "cloud.circle", "tornado.circle", "flame.circle", "play.circle", "repeat.circle", "infinity.circle", "speaker.circle", "magnifyingglass.circle", "swirl.circle.righthalf.filled", "play.rectangle.on.rectangle.circle", "heart.circle", "star.circle", "airplane.circle", "car.circle"]
     
     private enum CreationMode { case item, tag }
+    @AppStorage("newItemsCount") private var count = 0
     
     
     var body: some View {
