@@ -14,7 +14,8 @@ final class Item {
     @Attribute(.unique) var title: String
     var subTitle: String
     var body: String
-    var date: Date
+    var createDate: Date
+    var updateDate: Date
     var tag: Tag
     var isFavorit: Bool
     var isPinned: Bool
@@ -26,7 +27,8 @@ final class Item {
         self.title = title
         self.subTitle = subTitle
         self.body = body
-        self.date = Date.now
+        self.updateDate = Date.now
+        self.createDate = Date.now
         self.tag = tag
         self.isFavorit = false
         self.isPinned = false
