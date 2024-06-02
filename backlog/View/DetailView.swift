@@ -12,6 +12,18 @@ struct DetailView: View {
     @Environment(\.modelContext) private var modelContext
     @FocusState var isInputActive: Bool
     @State var item: Item
+    @Query private var tags: [Tag]
+    @State var lineLImit = 25
+    @State private var keyboardHeight: CGFloat = 0
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @State private var isExpanded: Bool = false
+    @State private var isPresented: Bool = false
+    @State private var selectedTag: Tag
+    
+    init(item: Item) {
+        self.item = item
+        _selectedTag = State(initialValue: item.tag)
+    }
     
     
     var body: some View {
@@ -156,6 +168,12 @@ struct DetailView: View {
                     }
                     
                     Button {
+                        isPresented.toggle()
+                    } label: {
+                        Label("Change tag", systemImage: "tag")
+                    }
+                    
+                    Button {
                         
                     } label: {
                         Label("Share", systemImage: "square.and.arrow.up")
@@ -172,6 +190,35 @@ struct DetailView: View {
                 }
             }
         }
+        .sheet(isPresented: $isPresented) {
+            HStack {
+                Button(role: .destructive) {
+                    isPresented.toggle()
+                } label: {
+                    Label("Dismiss", systemImage: "")
+                        .font(.title3)
+                }
+                
+                Spacer()
+                
+                Button {
+                    item.tag = selectedTag
+                    isPresented.toggle()
+                } label: {
+                    Label("Save", systemImage: "")
+                        .font(.title3)
+                }
+            }
+            .padding()
+            
+            Picker("Select a tag", selection: $selectedTag) {
+                ForEach(tags, id: \.self) { tag in
+                    Text(tag.titleKey).tag(tag)
+                }
+            }
+            .pickerStyle(.wheel)
+            .presentationDetents([.height(250)])
+        }
     }
 }
 
@@ -183,8 +230,11 @@ struct DetailView: View {
     do {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Item.self, configurations: config)
-        let newsTags = [Tag(systemImage: "bookmark.circle", titleKey: "framevorks", items: nil)]
-        let newItem = Item(title: "swiftUI", subTitle: "subTitle", body: "body", tags: newsTags)
+        let color = ColorModel(color: .black)
+        let newsTag = Tag(systemImage: "bookmark.circle", titleKey: "framevorks", color: color)
+        let newItem = Item(title: "swiftUI", subTitle: "subTitle", body: "body", tag: newsTag, url: "")
+        @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
 
         return DetailView(item: newItem)
             .modelContainer(container)
