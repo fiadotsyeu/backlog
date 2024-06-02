@@ -34,12 +34,13 @@ struct ItemRow: View {
             HStack {
                 Image(systemName: item.isFavorit ? "bookmark.fill" : "bookmark")
                 Image(systemName: item.isPinned ? "pin.fill" : "pin")
+                Image(systemName: item.isArchive ? "archivebox.fill" : "")
                 
                 Spacer()
                 
                 Text("Created in \(item.date, format: Date.FormatStyle(date: .numeric, time: .standard))") //or Updated in
             }
-            .font(.system(size: 9))
+            .font(.caption)
 
             
             .contextMenu {
@@ -60,6 +61,16 @@ struct ItemRow: View {
                         Label("Unpin", systemImage: "pin.fill")
                     } else {
                         Label("Pin", systemImage: "pin")
+                    }
+                }
+                
+                Button {
+                    item.isArchive.toggle()
+                } label: {
+                    if item.isArchive {
+                        Label("Unarchive", systemImage: "archivebox.fill")
+                    } else {
+                        Label("Archive", systemImage: "archivebox")
                     }
                 }
                 

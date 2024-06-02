@@ -118,6 +118,18 @@ struct DetailView: View {
         }
         
         .toolbar(id: "secondaryAction") {
+            ToolbarItem(id: "Archive", placement: .navigationBarTrailing) {
+                Button {
+                    item.isArchive.toggle()
+                } label: {
+                    if item.isArchive {
+                        Label("Unarchive", systemImage: "archivebox.fill")
+                    } else {
+                        Label("Archive", systemImage: "archivebox")
+                    }
+                }
+            }
+            
             ToolbarItem(id: "secondaryAction", placement: .navigationBarTrailing) {
                 Menu {
                     Button {
