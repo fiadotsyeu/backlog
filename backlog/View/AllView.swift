@@ -19,11 +19,11 @@ struct AllView: View {
     }
 
     var pinnedItems: [Item] {
-        searchResults.filter { $0.isPinned }
+        searchResults.filter { $0.isPinned && !$0.isArchive}
     }
         
     var unpinnedItems: [Item] {
-        searchResults.filter { !$0.isPinned }
+        searchResults.filter { !$0.isPinned && !$0.isArchive}
     }
     
     var body: some View {
