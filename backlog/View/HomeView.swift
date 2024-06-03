@@ -14,6 +14,7 @@ struct HomeView: View {
     @Query private var items: [Item]
     @State private var selectedTab = 0
     @State private var showingSheet = false
+    @State private var showingArchive = false
 
     
     var body: some View {
@@ -48,17 +49,20 @@ struct HomeView: View {
                     )
                 }
                 .navigationViewStyle(.stack)
-                ScrollView {
+                
+                NavigationView {
                     TagContainerView()
                 }
                 .tag(1)
                 .tabItem {
                     Label(
-                        title: { Text("Category") },
+                        title: { Text("Tags") },
                         icon: { Image(systemName: "folder") }
                     )
                 }
+                .navigationViewStyle(.stack)
                 .padding(10)
+                
                 SettingView()
                     .tag(2)
                     .tabItem {
@@ -85,6 +89,9 @@ struct HomeView: View {
             SheetView()
                 .presentationDetents([.medium])
         }
+        .sheet(isPresented: $showingArchive) {
+            ArchivView()
+        }
     }
     
     private func FButton() -> some View {
@@ -93,7 +100,7 @@ struct HomeView: View {
                 
             }
             FloatingAction(symbol: "archivebox") {
-                
+                showingArchive.toggle()
             }
             FloatingAction(symbol: "bookmark") {
                 
