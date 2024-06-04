@@ -57,3 +57,47 @@ struct CustomSearchBar: View {
         searchText = ""
     }
 }
+
+
+struct ItemList: View {
+    @Environment(\.modelContext) private var modelContext
+    @State private var items: [Item]
+    @State private var searchText = ""
+    typealias ItemFilter = (Item) -> Bool
+    private var filter: ItemFilter
+    
+    init(items: [Item], filter: @escaping ItemFilter = { _ in true }) {
+        self._items = State(initialValue: items)
+        self.filter = filter
+    }
+    
+    private var searchResults : [Item] {
+        searchText.isEmpty ? items : items.filter { $0.title.localizedStandardContains(searchText) }
+    }
+    
+    var body: some View {
+        NavigationSplitView {
+            VStack {
+                CustomSearchBar(searchText: $searchText)
+                    .padding(.vertical, 15)
+                List {
+                    Section(header: Text("Favorite items")) {
+                        ForEach(searchResults.filter(filter), id: \.self) { item in
+                            NavigationLink(destination: DetailView(item: item)) {
+                                ItemRow(item: item)
+                            }
+                        }
+                    }
+                }
+                .buttonStyle(PlainButtonStyle())
+                .animation(.default, value: items.count)
+            }
+            .listStyle(.plain)
+            .animation(.default, value: searchResults)
+        } detail: {
+            
+        }
+        .scrollIndicators(.hidden)
+        .navigationViewStyle(.stack)
+    }
+}
