@@ -6,13 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FavoriteView: View {
+    @Query private var items: [Item]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ItemList(items: items) { item in
+            item.isFavorite && !item.isArchive
+        }
     }
 }
 
 #Preview {
     FavoriteView()
+        .modelContainer(for: Item.self, inMemory: true)
 }
