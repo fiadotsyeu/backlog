@@ -46,9 +46,9 @@ struct ItemRow: View {
             
             .contextMenu {
                 Button {
-                    item.isFavorit.toggle()
+                    item.isFavorite.toggle()
                 } label: {
-                    if item.isFavorit {
+                    if item.isFavorite {
                         Label("Unfavorite", systemImage: "bookmark.fill")
                     } else {
                         Label("Favorite", systemImage: "bookmark")

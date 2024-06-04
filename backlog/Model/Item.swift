@@ -17,7 +17,7 @@ final class Item {
     var createDate: Date
     var updateDate: Date
     var tag: Tag
-    var isFavorit: Bool
+    var isFavorite: Bool
     var isPinned: Bool
     var isArchive: Bool
     var url: String
@@ -30,7 +30,7 @@ final class Item {
         self.updateDate = Date.now
         self.createDate = Date.now
         self.tag = tag
-        self.isFavorit = false
+        self.isFavorite = false
         self.isPinned = false
         self.isArchive = false
         self.url = url
