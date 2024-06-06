@@ -15,6 +15,7 @@ struct HomeView: View {
     @State private var selectedTab = 0
     @State private var showingSheet = false
     @State private var showingArchive = false
+    @State private var showingFavorite = false
 
     
     var body: some View {
@@ -92,6 +93,9 @@ struct HomeView: View {
         .sheet(isPresented: $showingArchive) {
             ArchivView()
         }
+        .sheet(isPresented: $showingFavorite) {
+            FavoriteView()
+        }
     }
     
     private func FButton() -> some View {
@@ -103,7 +107,7 @@ struct HomeView: View {
                 showingArchive.toggle()
             }
             FloatingAction(symbol: "bookmark") {
-                
+                showingFavorite.toggle()
             }
             FloatingAction(symbol: "square.badge.plus") {
                 showingSheet.toggle()

@@ -32,7 +32,7 @@ struct ItemRow: View {
             }
             
             HStack {
-                Image(systemName: item.isFavorit ? "bookmark.fill" : "bookmark")
+                Image(systemName: item.isFavorite ? "bookmark.fill" : "bookmark")
                 Image(systemName: item.isPinned ? "pin.fill" : "pin")
                 Image(systemName: item.isArchive ? "archivebox.fill" : "")
                 
