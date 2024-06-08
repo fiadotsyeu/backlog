@@ -113,7 +113,8 @@ struct DetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
-                Button(action: { UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                Button(action: {
+                    isInputActive.toggle()
                 }, label: {
                     Image(systemName: "checkmark")
                 })

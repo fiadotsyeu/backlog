@@ -27,7 +27,7 @@ struct AllView: View {
     }
     
     var body: some View {
-        NavigationSplitView {
+        NavigationView {
             VStack {
                 CustomSearchBar(searchText: $searchText)
                     .padding(.vertical, 8)
@@ -55,10 +55,10 @@ struct AllView: View {
                 .buttonStyle(PlainButtonStyle())
                 .animation(.default, value: pinnedItems.count)
             }
-            .scrollIndicators(.hidden)
-        } detail: {
+            .listStyle(.plain)
+            .animation(.default, value: searchResults)
         }
-        .navigationViewStyle(.stack)
+        .scrollIndicators(.hidden)
     }
     
     

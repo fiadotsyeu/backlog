@@ -76,7 +76,7 @@ struct ItemList: View {
     }
     
     var body: some View {
-        NavigationSplitView {
+        NavigationView {
             VStack {
                 CustomSearchBar(searchText: $searchText)
                     .padding(.vertical, 15)
@@ -94,10 +94,7 @@ struct ItemList: View {
             }
             .listStyle(.plain)
             .animation(.default, value: searchResults)
-        } detail: {
-            
         }
         .scrollIndicators(.hidden)
-        .navigationViewStyle(.stack)
     }
 }
