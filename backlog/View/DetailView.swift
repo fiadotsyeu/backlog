@@ -100,10 +100,15 @@ struct DetailView: View {
                     }
                 Spacer()
             }
+            
         }
-        .onChange(of: item.hasChanges) {
-            item.updateDate = Date.now
+        .onChange(of: item.hasChanges) {  [weak item] oldValue, newValue in
+            guard let item = item else { return }
+            if newValue {
+                item.updateDate = Date()
+            }
         }
+
         .navigationTitle(item.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
