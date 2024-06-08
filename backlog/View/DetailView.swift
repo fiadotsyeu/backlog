@@ -7,13 +7,14 @@
 
 import SwiftUI
 import SwiftData
+import Combine
 
 struct DetailView: View {
     @Environment(\.modelContext) private var modelContext
     @FocusState var isInputActive: Bool
     @State var item: Item
     @Query private var tags: [Tag]
-    @State var lineLImit = 25
+    @State var lineLImit = 0
     @State private var keyboardHeight: CGFloat = 0
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var isExpanded: Bool = false
@@ -83,24 +84,33 @@ struct DetailView: View {
             .padding([.leading, .trailing], 15)
             
             Divider()
-            ScrollView {
+            GeometryReader { geometry in
                 TextField("Body", text: $item.body, axis: .vertical)
+                    .focused($isInputActive)
                     .frame(maxWidth: .infinity)
                     .padding([.leading, .trailing], 15)
                     .padding(.vertical, 5)
-                    .lineLimit(lineLImit, reservesSpace: true)
-                    .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notification in
-                        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-                            self.keyboardHeight = keyboardFrame.height
-                            print(keyboardFrame.height)
+                    .lineLimit(lineLImit, reservesSpace: false)
+                    .onAppear {
+                        updateLineLimit(for: geometry.size.height)
+                        
+                        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
+                            if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                                self.keyboardHeight = keyboardFrame.height + 20
+                                updateLineLimit(for: geometry.size.height)
+                            }
+                        }
+                        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+                            self.keyboardHeight = 0
+                            updateLineLimit(for: geometry.size.height)
                         }
                     }
-                    .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                        self.keyboardHeight = 0
+                    .onDisappear {
+                        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+                        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
                     }
                 Spacer()
             }
-            
         }
         .onChange(of: item.hasChanges) {  [weak item] oldValue, newValue in
             guard let item = item else { return }
@@ -108,7 +118,9 @@ struct DetailView: View {
                 item.updateDate = Date()
             }
         }
-
+        .onReceive(Publishers.keyboardHeight) { height in
+            self.keyboardHeight = height
+        }
         .navigationTitle(item.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -138,7 +150,7 @@ struct DetailView: View {
             }
         }
         
-        .toolbar(id: "secondaryAction") {
+        .toolbar(id: "navBar") {
             ToolbarItem(id: "Archive", placement: .navigationBarTrailing) {
                 Button {
                     item.isArchive.toggle()
@@ -226,11 +238,28 @@ struct DetailView: View {
             .presentationDetents([.height(250)])
         }
     }
+    
+    private func updateLineLimit(for availableHeight: CGFloat) {
+        let lineHeight: CGFloat = 22 // Estimated height of a single line
+        let availableSpace = availableHeight - keyboardHeight
+        self.lineLImit = max(Int(availableSpace / lineHeight), 1)
+        print("Updated lineLImit: \(lineLImit)")
+    }
 }
 
-
-
-
+extension Publishers {
+    static var keyboardHeight: AnyPublisher<CGFloat, Never> {
+        let willShow = NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+            .map { $0.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect }
+            .map { $0.height }
+        
+        let willHide = NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
+            .map { _ in CGFloat(0) }
+        
+        return MergeMany(willShow, willHide)
+            .eraseToAnyPublisher()
+    }
+}
 
 #Preview {
     do {
