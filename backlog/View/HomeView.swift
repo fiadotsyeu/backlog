@@ -16,6 +16,15 @@ struct HomeView: View {
     @State private var showingSheet = false
     @State private var showingArchive = false
     @State private var showingFavorite = false
+    @State private var showingTutorials: Bool = false
+    @State private var showingTips: Bool = false
+    @State private var showingNews: Bool = false
+
+    @State private var selectedTab = 0
+    @State private var buttonRect: CGRect = .zero
+    @State private var currentImage: UIImage?
+    @State private var previousImage: UIImage?
+    @State private var maskAnimation: Bool = false
 
     
     var body: some View {
@@ -35,6 +44,20 @@ struct HomeView: View {
             .overlay {
                 Text("BackLog")
                     .font(.title.bold())
+                
+                Spacer()
+                
+                Button(action: { toggleDarkMode.toggle() }, label: {
+                    Image(systemName: toggleDarkMode ? "sun.max.fill" : "moon.fill")
+                        .foregroundStyle(Color.primary)
+                        .symbolEffect(.bounce, value: toggleDarkMode)
+                        .frame(width: 40, height: 40)
+                        .font(.title2)
+                })
+                .rect { value in
+                    buttonRect = value
+                }
+                .disabled(currentImage != nil || previousImage != nil || maskAnimation)
             }
             .padding(15)
                         
@@ -78,6 +101,58 @@ struct HomeView: View {
             .tabViewStyle(.page(indexDisplayMode: .always))
             .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
         }
+        .createImages(toggleDarkMode: toggleDarkMode, currentImage: $currentImage, previousImage: $previousImage, activateDarkMode: $activateDarkMode)
+        .overlay(content: {
+            GeometryReader(content: { geometry in
+                let size = geometry.size
+                
+                if let previousImage, let currentImage {
+                    ZStack {
+                        Image(uiImage: previousImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: size.width, height: size.height)
+                        
+                        Image(uiImage: currentImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: size.width, height: size.height)
+                            .mask(alignment: .topLeading) {
+                                Circle()
+                                    .frame(width: buttonRect.width * (maskAnimation ? 80 : 1), height: buttonRect.height * (maskAnimation ? 80 : 1), alignment: .bottomLeading)
+                                    .frame(width: buttonRect.width, height: buttonRect.height)
+                                    .offset(x: buttonRect.minX, y: buttonRect.minY)
+                                    .ignoresSafeArea()
+                            }
+                    }
+                    .task {
+                        guard !maskAnimation else { return }
+                        try? await Task.sleep(for: .seconds(0))
+                        
+                        withAnimation(.easeInOut(duration: 0.9), completionCriteria: .logicallyComplete) {
+                            maskAnimation = true
+                        } completion: {
+                            /// Removing all snapshots
+                            self.currentImage = nil
+                            self.previousImage = nil
+                            maskAnimation = false
+                        }
+                    }
+                }
+            })
+            // Reverse Masking
+            .mask({
+                Rectangle()
+                    .overlay(alignment: .topLeading) {
+                        Circle()
+                            .frame(width: buttonRect.width, height: buttonRect.height)
+                            .offset(x: buttonRect.minX, y: buttonRect.minY)
+                            .blendMode(.destinationOut)
+                    }
+            })
+            .ignoresSafeArea()
+        })
+        .preferredColorScheme(activateDarkMode ? .dark : .light)
         .overlay(alignment: .bottomTrailing) {
             if selectedTab != 2 {
                 FButton()
