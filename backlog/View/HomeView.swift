@@ -10,9 +10,12 @@ import SwiftData
 
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.colorScheme) private var scheme
+    
     @Query private var items: [Item]
-    @State private var selectedTab = 0
+    
+    @AppStorage("toggleDarkMode") private var toggleDarkMode: Bool = false
+    @AppStorage("activateDarkMode") private var activateDarkMode: Bool = false
+    
     @State private var showingSheet = false
     @State private var showingArchive = false
     @State private var showingFavorite = false
@@ -30,18 +33,23 @@ struct HomeView: View {
     var body: some View {
         VStack(spacing: 15) {
             HStack {
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                    Image(systemName: "line.3.horizontal.decrease")
-                })
+                Menu {
+                    Button("Tutorial", systemImage: "book", action: { showingTutorials.toggle() })
+                    Button("Tips", systemImage: "lightbulb.max", action: { showingTips.toggle() })
+                    Button("What's new?", systemImage: "newspaper", action: { showingNews.toggle() })
+                    Button("Feedback", systemImage: "text.bubble", action: { })
+                } label: {
+                    Button(action: {  }, label: {
+                        Image(systemName: "questionmark.circle")
+                            .foregroundStyle(Color.primary)
+                            .frame(width: 40, height: 40)
+                            .font(.title2)
+                    })
+                }
+                .menuStyle(.borderlessButton)
                 
                 Spacer()
                 
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                    Image(systemName: "microbe")
-                })
-            }
-            .font(.title2)
-            .overlay {
                 Text("BackLog")
                     .font(.title.bold())
                 
