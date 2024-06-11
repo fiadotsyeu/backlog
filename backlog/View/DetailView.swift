@@ -96,12 +96,12 @@ struct DetailView: View {
                         
                         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
                             if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-                                self.keyboardHeight = keyboardFrame.height + 20
+                                self.keyboardHeight = keyboardFrame.height + 13
                                 updateLineLimit(for: geometry.size.height)
                             }
                         }
                         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
-                            self.keyboardHeight = 0
+                            self.keyboardHeight = -5
                             updateLineLimit(for: geometry.size.height)
                         }
                     }
