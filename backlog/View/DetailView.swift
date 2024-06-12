@@ -191,9 +191,7 @@ struct DetailView: View {
                         Label("Change tag", systemImage: "tag")
                     }
                     
-                    Button {
-                        
-                    } label: {
+                    ShareLink(item: "Title: \(item.title)\nSubtitle: \(item.subTitle)\nURL: \(item.url)\n\n\(item.body)") {
                         Label("Share", systemImage: "square.and.arrow.up")
                     }
                                         
