@@ -46,6 +46,7 @@ struct CustomSearchBar: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             Button(action: { hideKeyboard() }, label: {
                 Text("Cancel")
+                    .foregroundColor(.primary)
             })
 
         }
@@ -160,3 +161,10 @@ extension UIView {
         }
     }
 }
+
+
+let customDateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "dd.MM.yyyy, HH:mm:ss"
+    return formatter
+}()
