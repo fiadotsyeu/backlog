@@ -10,6 +10,8 @@ import SwiftData
 
 @main
 struct backlogApp: App {
+    let notificationManager = NotificationManager.shared
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -27,6 +29,12 @@ struct backlogApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    #if DEBUG
+                    UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
+                    #endif
+                    notificationManager.requestNotificationPermission()
+                }
         }
         .modelContainer(sharedModelContainer)
     }
