@@ -1,5 +1,5 @@
 //
-//  Notification.swift
+//  NotificationManager.swift
 //  backlog
 //
 //  Created by Andrei Fiadotsyeu on 16.06.2024.
@@ -9,14 +9,13 @@ import SwiftUI
 import Foundation
 import UserNotifications
 
-class NotificationCenter: NSObject, UNUserNotificationCenterDelegate {
-    static let shared = Notification()
+class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
+    static let shared = NotificationManager()
     private var fileTimers = [String: MemoMinder]()
     
     private override init() {
         super.init()
         UNUserNotificationCenter.current().delegate = self
-        requestNotificationPermission()
     }
     
     func requestNotificationPermission() {
@@ -34,7 +33,6 @@ class NotificationCenter: NSObject, UNUserNotificationCenterDelegate {
     }
     
     func scheduleNotification(at date: Date, with identifier: String) {
-        print("shedule ok")
         let content = UNMutableNotificationContent()
         content.title = "File Timer Alert"
         content.body = "Your file timer has ended."
