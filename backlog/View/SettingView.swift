@@ -6,16 +6,33 @@
 //
 
 import SwiftUI
+import SwiftData
+import UniformTypeIdentifiers
 
 
 struct SettingView: View {
+    @Environment(\.modelContext) private var modelContext
+
     @AppStorage("isNotification") private var isNotification: Bool = true
     @AppStorage("isMemoMinder") private var isMemoMinder: Bool = true
-    @AppStorage("selectedMemoMinder") private var selectedMemoMinder: Int = 5
+    @AppStorage("MemoMindreInterval") private var memoMinderInterval: TimeInterval = Intervals.day.rawValue
     @AppStorage("selectedLanguage") private var selectedLanguage: String = "en"
-    @AppStorage("selectOptionExport") private var selectOptionExport: Bool = false
-    @AppStorage("selectOptionImport") private var selectOptionImport: Bool = false
+    
+    @State private var exportJson: Bool = false
+    @State private var importJson: Bool = false
 
+    @Query private var items: [Item]
+    @Query private var tags: [Tag]
+
+    private enum Intervals: TimeInterval, CaseIterable {
+        case day = 6400  // 1 day in seconds
+        case twoDays = 172800  // 2 days in seconds
+        case threeDays = 259200  // 3 days in seconds
+        case fourDays = 345600  // 4 days in seconds
+        case fiveDays = 432000  // 5 days in seconds
+        case week = 604800  // 1 week in seconds
+        case month = 2592000  // 30 days (approximately 1 month) in seconds
+    }
     
     var body: some View {
         Form {
@@ -28,15 +45,21 @@ struct SettingView: View {
                 Toggle(isOn: $isMemoMinder, label: {
                     Text("MemoMinder")
                 })
-                Picker(selection: $selectedMemoMinder, label: Text("Select frequency")) {
-                    Text("1 time per day").tag(0)
-                    Text("1 time every two days").tag(1)
-                    Text("1 time every three days").tag(2)
-                    Text("1 time every four days").tag(3)
-                    Text("1 time every five days").tag(4)
-                    Text("1 time during weekends").tag(5)
-                    Text("1 time per week").tag(6)
-                    Text("1 time per month").tag(7)
+                .onChange(of: isMemoMinder) {
+                    ItemManager(items: items, memoMinderInterval: memoMinderInterval).startTimers()
+                }
+                Picker(selection: $memoMinderInterval, label: Text("Select frequency")) {
+                    Text("1 time per day").tag(Intervals.day.rawValue)
+                    Text("1 time every two days").tag(Intervals.twoDays.rawValue)
+                    Text("1 time every three days").tag(Intervals.threeDays.rawValue)
+                    Text("1 time every four days").tag(Intervals.fourDays.rawValue)
+                    Text("1 time every five days").tag(Intervals.fiveDays.rawValue)
+                    Text("1 time per week").tag(Intervals.week.rawValue)
+                    Text("1 time per month").tag(Intervals.month.rawValue)
+                }
+                .onChange(of: memoMinderInterval) {
+                    NotificationManager.shared.cancelAllTimers()
+                    ItemManager(items: items, memoMinderInterval: memoMinderInterval).startTimers()
                 }
             }
             Section(header: Text("Language")) {
