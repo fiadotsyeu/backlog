@@ -54,6 +54,22 @@ class MemoMinder {
     }
 }
 
-#Preview {
-    MemoMinder()
+struct ItemManager {
+    @State private var items: [Item]
+    @State private var memoMinderInterval: TimeInterval
+    @AppStorage("isMemoMinder") private var isMemoMinder: Bool = true
+    
+    init(items: [Item], memoMinderInterval: TimeInterval) {
+        self.items = items
+        self.memoMinderInterval = memoMinderInterval
+    }
+    
+    func startTimers() {
+        if isMemoMinder {
+            for item in items {
+                let fileTimer = MemoMinder(creationDate: item.createDate, modificationDate: item.updateDate, period: memoMinderInterval)
+                fileTimer.scheduleNotification()
+            }
+        }
+    }
 }
