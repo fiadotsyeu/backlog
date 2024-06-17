@@ -56,19 +56,30 @@ class MemoMinder {
 
 struct ItemManager {
     @State private var items: [Item]
-    @State private var memoMinderInterval: TimeInterval
+    @AppStorage("MemoMindreInterval") private var memoMinderInterval: TimeInterval = Intervals.week.rawValue
     @AppStorage("isMemoMinder") private var isMemoMinder: Bool = true
     
-    init(items: [Item], memoMinderInterval: TimeInterval) {
+    private enum Intervals: TimeInterval, CaseIterable {
+        case day = 86400  // 1 day in seconds
+        case twoDays = 172800  // 2 days in seconds
+        case threeDays = 259200  // 3 days in seconds
+        case fourDays = 345600  // 4 days in seconds
+        case fiveDays = 432000  // 5 days in seconds
+        case week = 604800  // 1 week in seconds
+        case month = 2592000  // 30 days (approximately 1 month) in seconds
+    }
+    
+    init(items: [Item]) {
         self.items = items
-        self.memoMinderInterval = memoMinderInterval
     }
     
     func startTimers() {
         if isMemoMinder {
             for item in items {
-                let fileTimer = MemoMinder(creationDate: item.createDate, modificationDate: item.updateDate, period: memoMinderInterval)
-                fileTimer.scheduleNotification()
+                if item.isMemoMinder {
+                    let memoMinder = MemoMinder(creationDate: item.createDate, modificationDate: item.updateDate, period: memoMinderInterval)
+                    memoMinder.scheduleNotification()
+                }
             }
         }
     }
