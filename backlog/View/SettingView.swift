@@ -15,7 +15,7 @@ struct SettingView: View {
 
     @AppStorage("isNotification") private var isNotification: Bool = true
     @AppStorage("isMemoMinder") private var isMemoMinder: Bool = true
-    @AppStorage("MemoMindreInterval") private var memoMinderInterval: TimeInterval = Intervals.day.rawValue
+    @AppStorage("MemoMindreInterval") private var memoMinderInterval: TimeInterval = Intervals.week.rawValue
     @AppStorage("selectedLanguage") private var selectedLanguage: String = "en"
     
     @State private var exportJson: Bool = false
@@ -46,7 +46,11 @@ struct SettingView: View {
                     Text("MemoMinder")
                 })
                 .onChange(of: isMemoMinder) {
-                    ItemManager(items: items, memoMinderInterval: memoMinderInterval).startTimers()
+                    if isMemoMinder {
+                        ItemManager(items: items).startTimers()
+                    } else {
+                        NotificationManager.shared.cancelAllTimers()
+                    }
                 }
                 Picker(selection: $memoMinderInterval, label: Text("Select frequency")) {
                     Text("1 time per day").tag(Intervals.day.rawValue)
@@ -59,7 +63,7 @@ struct SettingView: View {
                 }
                 .onChange(of: memoMinderInterval) {
                     NotificationManager.shared.cancelAllTimers()
-                    ItemManager(items: items, memoMinderInterval: memoMinderInterval).startTimers()
+                    ItemManager(items: items).startTimers()
                 }
             }
             Section(header: Text("Language")) {
