@@ -34,7 +34,11 @@ struct ItemRow: View {
             HStack {
                 Image(systemName: item.isFavorite ? "bookmark.fill" : "bookmark")
                 Image(systemName: item.isPinned ? "pin.fill" : "pin")
-                Image(systemName: item.isArchive ? "archivebox.fill" : "")
+                Image(systemName: item.isMemoMinder ? "bell.badge.fill" : "bell.badge")
+                Image(systemName: item.isTimer ? "fitness.timer.fill" : "fitness.timer")
+                if item.isArchive {
+                    Image(systemName: "archivebox.fill")
+                }
                 
                 Spacer()
                 
@@ -79,6 +83,26 @@ struct ItemRow: View {
                     
                 } label: {
                     Label("Share", systemImage: "square.and.arrow.up")
+                }
+                
+                Button {
+                    item.isMemoMinder.toggle()
+                } label: {
+                    if item.isMemoMinder {
+                        Label("MemoMinder", systemImage: "bell.badge.fill")
+                    } else {
+                        Label("MemoMinder", systemImage: "bell.badge")
+                    }
+                }
+                
+                Button {
+                    item.isTimer.toggle()
+                } label: {
+                    if item.isTimer {
+                        Label("Stop timer", systemImage: "fitness.timer.fill")
+                    } else {
+                        Label("Set timer", systemImage: "fitness.timer")
+                    }
                 }
                 
                 Button(role: .destructive) {

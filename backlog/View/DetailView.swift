@@ -11,12 +11,15 @@ import Combine
 
 struct DetailView: View {
     @Environment(\.modelContext) private var modelContext
-    @FocusState var isInputActive: Bool
-    @State var item: Item
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     @Query private var tags: [Tag]
+
+    @FocusState var isInputActive: Bool
+    
+    @State var item: Item
     @State var lineLImit = 0
     @State private var keyboardHeight: CGFloat = 0
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var isExpanded: Bool = false
     @State private var isPresented: Bool = false
     @State private var selectedTag: Tag
@@ -73,12 +76,8 @@ struct DetailView: View {
                     }
                     
                 }, label: {
-                    HStack {
-                        withAnimation(.easeOut){
-                            Text(isExpanded ? "Hide additional fields." : "Show additional fields.")
-                                .font(.footnote)
-                        }
-                    }
+                    Text("Additional fields:")
+                        .font(.footnote)
                 }
             )
             .padding([.leading, .trailing], 15)
@@ -194,6 +193,26 @@ struct DetailView: View {
                     ShareLink(item: "Title: \(item.title)\nSubtitle: \(item.subTitle)\nURL: \(item.url)\n\n\(item.body)") {
                         Label("Share", systemImage: "square.and.arrow.up")
                     }
+                    
+                    Button {
+                        item.isMemoMinder.toggle()
+                    } label: {
+                        if item.isMemoMinder {
+                            Label("MemoMinder", systemImage: "bell.badge.fill")
+                        } else {
+                            Label("MemoMinder", systemImage: "bell.badge")
+                        }
+                    }
+                    
+                    Button {
+                        item.isTimer.toggle()
+                    } label: {
+                        if item.isTimer {
+                            Label("Stop timer", systemImage: "fitness.timer.fill")
+                        } else {
+                            Label("Set timer", systemImage: "fitness.timer")
+                        }
+                    }
                                         
                     Button(role: .destructive) {
                         modelContext.delete(item)
@@ -241,7 +260,6 @@ struct DetailView: View {
         let lineHeight: CGFloat = 22 // Estimated height of a single line
         let availableSpace = availableHeight - keyboardHeight
         self.lineLImit = max(Int(availableSpace / lineHeight), 1)
-        print("Updated lineLImit: \(lineLImit)")
     }
 }
 
