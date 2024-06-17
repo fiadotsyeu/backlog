@@ -21,6 +21,8 @@ final class Item: Identifiable, Codable {
     var isPinned: Bool
     var isArchive: Bool
     var url: String
+    var isMemoMinder: Bool
+    var isTimer: Bool
     
     init(title: String, subTitle: String, body: String, tag: Tag, url: String) {
         self.id = UUID().uuidString
@@ -34,10 +36,12 @@ final class Item: Identifiable, Codable {
         self.isPinned = false
         self.isArchive = false
         self.url = url
+        self.isMemoMinder = true
+        self.isTimer = false
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, title, subTitle, body, createDate, updateDate, tag, isFavorite, isPinned, isArchive, url
+        case id, title, subTitle, body, createDate, updateDate, tag, isFavorite, isPinned, isArchive, url, isMemoMinder, isTimer
     }
 
     func encode(to encoder: Encoder) throws {
@@ -53,6 +57,8 @@ final class Item: Identifiable, Codable {
         try container.encode(isPinned, forKey: .isPinned)
         try container.encode(isArchive, forKey: .isArchive)
         try container.encode(url, forKey: .url)
+        try container.encode(isMemoMinder, forKey: .isMemoMinder)
+        try container.encode(isTimer, forKey: .isTimer)
     }
 
     required init(from decoder: Decoder) throws {
@@ -68,5 +74,7 @@ final class Item: Identifiable, Codable {
         isPinned = try container.decode(Bool.self, forKey: .isPinned)
         isArchive = try container.decode(Bool.self, forKey: .isArchive)
         url = try container.decode(String.self, forKey: .url)
+        isMemoMinder = try container.decode(Bool.self, forKey: .isMemoMinder)
+        isTimer = try container.decode(Bool.self, forKey: .isTimer)
     }
 }
