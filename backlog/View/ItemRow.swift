@@ -114,6 +114,32 @@ struct ItemRow: View {
                     }
                 }
             }
+            .sheet(isPresented: $showingTimer) {
+                HStack {
+                    Button {
+                        showingTimer.toggle()
+                    } label: {
+                        Label("Dismiss", systemImage: "")
+                            .font(.title3)
+                            .foregroundColor(.red)
+                    }
+                    
+                    Spacer()
+                    
+                    Button {
+                        showingTimer.toggle()
+                    } label: {
+                        Label("Save", systemImage: "")
+                            .font(.title3)
+                    }
+                }
+                .padding()
+                
+                DatePicker("", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
+                    .datePickerStyle(.wheel)
+                    .presentationDetents([.height(270)])
+                    .labelsHidden()
+            }
         }
     }
 }
