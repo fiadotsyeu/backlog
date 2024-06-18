@@ -9,7 +9,9 @@ import SwiftUI
 
 struct ItemRow: View {
     @Environment(\.modelContext) private var modelContext
+    
     @State var item: Item
+    @State var showingTimer: Bool = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -96,6 +98,7 @@ struct ItemRow: View {
                 }
                 
                 Button {
+                    showingTimer.toggle()
                     item.isTimer.toggle()
                 } label: {
                     if item.isTimer {
@@ -115,30 +118,7 @@ struct ItemRow: View {
                 }
             }
             .sheet(isPresented: $showingTimer) {
-                HStack {
-                    Button {
-                        showingTimer.toggle()
-                    } label: {
-                        Label("Dismiss", systemImage: "")
-                            .font(.title3)
-                            .foregroundColor(.red)
-                    }
-                    
-                    Spacer()
-                    
-                    Button {
-                        showingTimer.toggle()
-                    } label: {
-                        Label("Save", systemImage: "")
-                            .font(.title3)
-                    }
-                }
-                .padding()
-                
-                DatePicker("", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
-                    .datePickerStyle(.wheel)
-                    .presentationDetents([.height(270)])
-                    .labelsHidden()
+                TimerView(showingTimer: showingTimer)
             }
         }
     }

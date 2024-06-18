@@ -23,6 +23,7 @@ struct DetailView: View {
     @State private var isExpanded: Bool = false
     @State private var isPresented: Bool = false
     @State private var selectedTag: Tag
+    @State var showingTimer: Bool = false
     
     init(item: Item) {
         self.item = item
@@ -205,6 +206,7 @@ struct DetailView: View {
                     }
                     
                     Button {
+                        showingTimer.toggle()
                         item.isTimer.toggle()
                     } label: {
                         if item.isTimer {
@@ -227,11 +229,12 @@ struct DetailView: View {
         }
         .sheet(isPresented: $isPresented) {
             HStack {
-                Button(role: .destructive) {
+                Button {
                     isPresented.toggle()
                 } label: {
-                    Label("Dismiss", systemImage: "")
+                    Label("Dismiss", systemImage: "xmark.circle")
                         .font(.title3)
+                        .foregroundColor(.red)
                 }
                 
                 Spacer()
@@ -240,8 +243,9 @@ struct DetailView: View {
                     item.tag = selectedTag
                     isPresented.toggle()
                 } label: {
-                    Label("Save", systemImage: "")
+                    Label("Save", systemImage: "plus.circle")
                         .font(.title3)
+                        .foregroundColor(.green)
                 }
             }
             .padding()
@@ -253,6 +257,10 @@ struct DetailView: View {
             }
             .pickerStyle(.wheel)
             .presentationDetents([.height(250)])
+        }
+        
+        .sheet(isPresented: $showingTimer) {
+            TimerView(showingTimer: showingTimer)
         }
     }
     
