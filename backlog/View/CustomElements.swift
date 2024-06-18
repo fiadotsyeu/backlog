@@ -168,3 +168,39 @@ let customDateFormatter: DateFormatter = {
     formatter.dateFormat = "dd.MM.yyyy, HH:mm:ss"
     return formatter
 }()
+
+
+struct TimerView: View {
+    @Environment(\.dismiss) private var dismiss
+    
+    @State var showingTimer: Bool
+    @State var selectedDate: Date = Date()
+    
+    var body: some View {
+        HStack {
+            Button {
+                dismiss()
+            } label: {
+                Label("Dismiss", systemImage: "xmark.circle")
+                    .font(.title3)
+                    .foregroundColor(.red)
+            }
+            
+            Spacer()
+            
+            Button {
+                dismiss()
+            } label: {
+                Label("Save", systemImage: "plus.circle")
+                    .font(.title3)
+                    .foregroundColor(.green)
+            }
+        }
+        .padding()
+        
+        DatePicker("", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
+            .datePickerStyle(.wheel)
+            .presentationDetents([.height(270)])
+            .labelsHidden()
+    }
+}
