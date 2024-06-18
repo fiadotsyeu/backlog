@@ -33,8 +33,32 @@ struct SheetView: View {
     
     
     var body: some View {
-        
-        VStack(alignment: .leading) {
+        HStack {
+            Button {
+                dismiss()
+            } label: {
+                Label("Dismiss", systemImage: "xmark.circle")
+                    .font(.title3)
+                    .foregroundColor(.red)
+            }
+            
+            Spacer()
+            
+            Button {
+                if selectedCreationMode == .tag {
+                    addOrUpdateTag(image: selectedTagImage, titleKey: newTitleKey, color: ColorModel.from(color: newTagColor))
+                } else if selectedCreationMode == .item {
+                    addOrUpdateItem(title: newTitle, subTitle: newSubTitle, body: newBody, tag: selectedTag)
+                }
+                dismiss()
+            } label: {
+                Label("Create", systemImage: "plus.circle")
+                    .font(.title3)
+                    .foregroundColor(.green)
+            }
+        }
+        .padding()
+        NavigationView {
             Form {
                 Section(header: Text("I want to create...")) {
                     Picker("CreationMode", selection: $selectedCreationMode) {
@@ -46,12 +70,6 @@ struct SheetView: View {
                     case .item:
                         TextField("Enter title", text: $newTitle)
                             .textContentType(.none)
-                            .focused($isFocused)
-                            .onAppear {
-                                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                                    isFocused = true
-                                }
-                            }
                         Picker("Select a tag", selection: $selectedTag) {
                             ForEach(tags, id: \.self) { tag in
                                 Text(tag.titleKey).tag(tag)
@@ -60,42 +78,15 @@ struct SheetView: View {
                     case .tag:
                         TextField("Enter title Key", text: $newTitleKey)
                             .textContentType(.none)
-                            .focused($isFocused)
-                            .onAppear {
-                                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                                    isFocused = true
-                                }
-                            }
                         
                         ColorPicker("Shoosen color", selection: $newTagColor)
                         
                         СustomPicker(selectedItem: $selectedTagImage, items: imageList)
                     }
                 }
-                Section {
-                    Button(action: {
-                        if selectedCreationMode == .tag {
-                            addOrUpdateTag(image: selectedTagImage, titleKey: newTitleKey, color: ColorModel.from(color: newTagColor))
-                        } else if selectedCreationMode == .item {
-                            addOrUpdateItem(title: newTitle, subTitle: newSubTitle, body: newBody, tag: selectedTag)
-                        }
-                        dismiss()
-                    }, label: {
-                        Text("Save")
-                            .font(.title3)
-                            .foregroundColor(.green)
-                    })
-                    .frame(maxWidth: .infinity)
-                }
-                Section {
-                    Button(action: { dismiss() }, label: {
-                        Text("Dismiss")
-                            .font(.title3)
-                            .foregroundColor(.red)
-                    })
-                }
-                .frame(maxWidth: .infinity)
             }
+            .background(Color.white)
+            .scrollContentBackground(.hidden)
         }
         .onAppear {
             if !tags.isEmpty {
