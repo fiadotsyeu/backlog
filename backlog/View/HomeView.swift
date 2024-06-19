@@ -23,7 +23,6 @@ struct HomeView: View {
     @State private var showingTips: Bool = false
     @State private var showingNews: Bool = false
 
-    @State private var selectedTab = 0
     @State private var buttonRect: CGRect = .zero
     @State private var currentImage: UIImage?
     @State private var previousImage: UIImage?
@@ -69,11 +68,10 @@ struct HomeView: View {
             }
             .padding(15)
                         
-            TabView(selection: $selectedTab) {
+            TabView {
                 NavigationView {
                     AllView()
                 }
-                .tag(0)
                 .tabItem {
                     Label(
                         title: { Text("All") },
@@ -85,7 +83,6 @@ struct HomeView: View {
                 NavigationView {
                     TagContainerView()
                 }
-                .tag(1)
                 .tabItem {
                     Label(
                         title: { Text("Tags") },
@@ -93,17 +90,17 @@ struct HomeView: View {
                     )
                 }
                 .navigationViewStyle(.stack)
-                .padding(10)
                 
-                SettingView()
-                    .tag(2)
-                    .tabItem {
-                        Label(
-                            title: { Text("Setting") },
-                            icon: { Image(systemName: "gear") }
-                        )
-                    }
-                
+                NavigationView {
+                    SettingView()
+                }
+                .tabItem {
+                    Label(
+                        title: { Text("Setting") },
+                        icon: { Image(systemName: "gear") }
+                    )
+                }
+                .navigationViewStyle(.stack)
             }
             .ignoresSafeArea()
             .tabViewStyle(.page(indexDisplayMode: .always))
@@ -162,11 +159,9 @@ struct HomeView: View {
         })
         .preferredColorScheme(activateDarkMode ? .dark : .light)
         .overlay(alignment: .bottomTrailing) {
-            if selectedTab != 2 {
-                FButton()
-                    .padding(.bottom, 25)
-                    .padding(.trailing, 20)
-            }
+            FButton()
+                .padding(.bottom, 25)
+                .padding(.trailing, 20)
         }
         .animation(.easeInOut, value: 0.35)
         .sheet(isPresented: $showingSheet) {
