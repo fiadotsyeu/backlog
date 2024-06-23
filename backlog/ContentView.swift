@@ -12,11 +12,17 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     
+    @State private var isActive = false
+    
     var body: some View {
-        HomeView()
-            .onAppear {
-                ItemManager(items: items).startTimers()
-            }
+        if isActive {
+            HomeView()
+                .onAppear {
+                    ItemManager(items: items).startTimers()
+                }
+        } else {
+            StartView(isActive: $isActive)
+        }
     }
 }
 
