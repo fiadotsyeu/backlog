@@ -18,16 +18,20 @@ struct StartView: View {
             Image(activateDarkMode ? "app_logo_dark" : "app_logo_light")
                 .resizable()
                 .frame(width: 160, height: 40)
-            Text("Effortless Content Management for Your Busy Life")
+            Text("Effortless Content Management for Your Busy Life\n\n")
                 .foregroundColor(Color(activateDarkMode ? .white : .black))
                 .font(.system(.footnote))
                 .bold()
+            Image(systemName: "ellipsis")
+                .foregroundColor(activateDarkMode ? .white : .black)
+                .symbolEffect(.variableColor.reversing.cumulative, options: .repeat(3).speed(3), value: scale)
+                .font(.system(size: 70))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(activateDarkMode ? .black : .white))
         .ignoresSafeArea(.all)
         .onAppear{
-            withAnimation(.easeIn(duration: 0.7)) {
+            withAnimation(.default) {
                 self.scale = 0.9
             }
         }
