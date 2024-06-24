@@ -10,11 +10,17 @@ import SwiftData
 
 struct TagsView: View {
     @Environment(\.modelContext) private var modelContext
+    
+    @AppStorage("activateDarkMode") private var activateDarkMode: Bool = false
+
     @Query private var items: [Item]
+    
     @State private var searchText = ""
+    
     let tagColor: ColorModel
     let systemImage: String
     let titleKey: String
+    
     @Binding var isSelected: Bool
     
     var body: some View {
@@ -27,7 +33,7 @@ struct TagsView: View {
         .padding(.leading, 4)
         .padding(.trailing, 10)
         .foregroundColor(isSelected ? .white : tagColor.swiftUIColor)
-        .background(isSelected ? tagColor.swiftUIColor : Color.white)
+        .background(isSelected ? tagColor.swiftUIColor : activateDarkMode ? .black : .white)
         .cornerRadius(20)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
