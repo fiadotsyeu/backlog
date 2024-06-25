@@ -178,9 +178,6 @@ struct HomeView: View {
     
     private func FButton() -> some View {
         FloatingButton {
-            FloatingAction(symbol: "trash") {
-                
-            }
             FloatingAction(symbol: "archivebox") {
                 showingArchive.toggle()
             }
@@ -194,11 +191,11 @@ struct HomeView: View {
             Image(systemName: "plus")
                 .font(.title3)
                 .fontWidth(.standard)
-                .foregroundStyle(.white)
+                .foregroundStyle(.link)
                 .rotationEffect(.init(degrees: isExpanded ? 45 : 0))
                 .scaleEffect(1.02)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(.black, in: .circle)
+                .background(.primary, in: .circle)
             // Scaling effect when expanded
                 .scaleEffect(isExpanded ? 0.9 : 1)
         }
