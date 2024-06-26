@@ -73,6 +73,12 @@ class Json {
     }
 }
 
-#Preview {
-    Json()
+struct CombinedData: Codable {
+    var items: [Item]
+    var tags: [Tag]
+    
+    init(items: [Item], tags: [Tag]) {
+        self.items = items
+        self.tags = tags
+    }
 }
