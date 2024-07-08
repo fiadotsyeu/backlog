@@ -29,6 +29,7 @@
 		81A958F72BE90E35005CA623 /* logo_backlog.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A958F62BE90E35005CA623 /* logo_backlog.png */; };
 		81A958F92BEA6A9F005CA623 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A958F82BEA6A9F005CA623 /* DetailView.swift */; };
 		81AB441E2BF9F9C40069E5D8 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AB441D2BF9F9C30069E5D8 /* Color.swift */; };
+		81B9B32C2C27162600C40CC2 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B9B32B2C27162600C40CC2 /* StartView.swift */; };
 		81BB82802C0F7E4800EC6F52 /* FavoriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BB827F2C0F7E4800EC6F52 /* FavoriteView.swift */; };
 		81C1C0D62C14C9040087007F /* Rect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C1C0D52C14C9040087007F /* Rect.swift */; };
 		81C1C0D82C19CE230087007F /* Json.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C1C0D72C19CE220087007F /* Json.swift */; };
@@ -79,6 +80,7 @@
 		81A958F62BE90E35005CA623 /* logo_backlog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_backlog.png; sourceTree = "<group>"; };
 		81A958F82BEA6A9F005CA623 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		81AB441D2BF9F9C30069E5D8 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		81B9B32B2C27162600C40CC2 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
 		81BB827F2C0F7E4800EC6F52 /* FavoriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteView.swift; sourceTree = "<group>"; };
 		81C1C0D52C14C9040087007F /* Rect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rect.swift; sourceTree = "<group>"; };
 		81C1C0D72C19CE220087007F /* Json.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Json.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				810FBD812C024791009004F4 /* ItemRow.swift */,
 				810FBD832C0BA671009004F4 /* ArchivView.swift */,
 				81BB827F2C0F7E4800EC6F52 /* FavoriteView.swift */,
+				81B9B32B2C27162600C40CC2 /* StartView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 				810FBD822C024791009004F4 /* ItemRow.swift in Sources */,
 				810FBD842C0BA671009004F4 /* ArchivView.swift in Sources */,
 				81A4F1A22BE79A5F00B27429 /* AllView.swift in Sources */,
+				81B9B32C2C27162600C40CC2 /* StartView.swift in Sources */,
 				81AB441E2BF9F9C40069E5D8 /* Color.swift in Sources */,
 				81A4F1AB2BE7FA9A00B27429 /* SettingView.swift in Sources */,
 				81BB82802C0F7E4800EC6F52 /* FavoriteView.swift in Sources */,
@@ -533,9 +537,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = backlog/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BackLog;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -566,9 +572,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = backlog/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BackLog;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
