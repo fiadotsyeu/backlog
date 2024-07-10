@@ -228,4 +228,32 @@ extension Color {
         let hexString = String(format: "%02X%02X%02X", Int(r * 255), Int(g * 255), Int(b * 255))
         return hexString
     }
+    
+    func inverted() -> Color {
+        let uiColor = UIColor(self)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        return Color(
+            red: 1.0 - red,
+            green: 1.0 - green,
+            blue: 1.0 - blue,
+            opacity: Double(alpha)
+        )
+    }
+}
+
+
+struct CustomTextFieldStyle: TextFieldStyle {
+    var borderColor: Color
+    
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
+            .padding(EdgeInsets(top: 5, leading: 12, bottom: 5, trailing: 12))
+            .background(RoundedRectangle(cornerRadius: 4).stroke(borderColor, lineWidth: 1))
+    }
 }
