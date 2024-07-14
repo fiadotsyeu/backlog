@@ -10,6 +10,9 @@ import SwiftData
 
 @main
 struct backlogApp: App {
+    @State var appColor: Color = .white
+    @AppStorage("appColorHex") private var appColorHex: String = "#FFFFFF"
+
     let notificationManager = NotificationManager.shared
     
     var sharedModelContainer: ModelContainer = {
@@ -34,6 +37,7 @@ struct backlogApp: App {
                     UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
                     #endif
                     notificationManager.requestNotificationPermission()
+                    appColor = Color(hex: appColorHex)
                 }
         }
         .modelContainer(sharedModelContainer)

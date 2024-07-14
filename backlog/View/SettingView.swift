@@ -17,6 +17,9 @@ struct SettingView: View {
     @AppStorage("isMemoMinder") private var isMemoMinder: Bool = true
     @AppStorage("MemoMindreInterval") private var memoMinderInterval: TimeInterval = Intervals.week.rawValue
     @AppStorage("selectedLanguage") private var selectedLanguage: String = "en"
+    @AppStorage("appColorHex") private var appColorHex: String = "#FFFFFF"
+
+    @Binding var appColor: Color
     
     @State private var exportJson: Bool = false
     @State private var importJson: Bool = false
