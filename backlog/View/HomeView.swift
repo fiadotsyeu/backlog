@@ -27,6 +27,8 @@ struct HomeView: View {
     @State private var currentImage: UIImage?
     @State private var previousImage: UIImage?
     @State private var maskAnimation: Bool = false
+    
+    @Binding var appColor: Color
 
     
     var body: some View {
@@ -40,7 +42,7 @@ struct HomeView: View {
                 } label: {
                     Button(action: {  }, label: {
                         Image(systemName: "questionmark.circle")
-                            .foregroundStyle(Color.primary)
+                            .foregroundStyle(appColor)
                             .frame(width: 40, height: 40)
                             .font(.title2)
                     })
@@ -49,14 +51,16 @@ struct HomeView: View {
                 
                 Spacer()
                 
-                Text("BackLog")
-                    .font(.title.bold())
+                Image("app_logo_dark")
+                    .resizable()
+                    .frame(width: 130, height: 30)
+                    .colorMultiply(appColor)
                 
                 Spacer()
                 
                 Button(action: { toggleDarkMode.toggle() }, label: {
                     Image(systemName: toggleDarkMode ? "sun.max.fill" : "moon.fill")
-                        .foregroundStyle(Color.primary)
+                        .foregroundStyle(appColor)
                         .symbolEffect(.bounce, value: toggleDarkMode)
                         .frame(width: 40, height: 40)
                         .font(.title2)
@@ -70,8 +74,9 @@ struct HomeView: View {
                         
             TabView {
                 NavigationView {
-                    AllView()
+                    AllView(appColor: $appColor)
                 }
+                .accentColor(appColor)
                 .tabItem {
                     Label(
                         title: { Text("All") },
@@ -81,7 +86,7 @@ struct HomeView: View {
                 .navigationViewStyle(.stack)
                 
                 NavigationView {
-                    TagContainerView()
+                    TagContainerView(appColor: $appColor)
                 }
                 .tabItem {
                     Label(
@@ -92,7 +97,7 @@ struct HomeView: View {
                 .navigationViewStyle(.stack)
                 
                 NavigationView {
-                    SettingView()
+                    SettingView(appColor: $appColor)
                 }
                 .tabItem {
                     Label(
@@ -105,6 +110,7 @@ struct HomeView: View {
             .ignoresSafeArea()
             .tabViewStyle(.page(indexDisplayMode: .always))
             .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+            .background(appColor)
         }
         .createImages(toggleDarkMode: toggleDarkMode, currentImage: $currentImage, previousImage: $previousImage, activateDarkMode: $activateDarkMode)
         .overlay(content: {
@@ -169,33 +175,36 @@ struct HomeView: View {
                 .presentationDetents([.large])
         }
         .sheet(isPresented: $showingArchive) {
-            ArchivView()
+            ArchivView(appColor: $appColor)
+                .presentationDetents([.medium])
         }
+        
         .sheet(isPresented: $showingFavorite) {
-            FavoriteView()
+            FavoriteView(appColor: $appColor)
+                .presentationDetents([.medium])
         }
     }
     
     private func FButton() -> some View {
         FloatingButton {
-            FloatingAction(symbol: "archivebox") {
+            FloatingAction(appColor: $appColor, symbol: "archivebox") {
                 showingArchive.toggle()
             }
-            FloatingAction(symbol: "bookmark") {
+            FloatingAction(appColor: $appColor, symbol: "bookmark") {
                 showingFavorite.toggle()
             }
-            FloatingAction(symbol: "square.badge.plus") {
+            FloatingAction(appColor: $appColor, symbol: "square.badge.plus") {
                 showingSheet.toggle()
             }
         } label: { isExpanded in
             Image(systemName: "plus")
                 .font(.title3)
                 .fontWidth(.standard)
-                .foregroundStyle(.link)
+                .foregroundStyle(.primary)
                 .rotationEffect(.init(degrees: isExpanded ? 45 : 0))
                 .scaleEffect(1.02)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(.primary, in: .circle)
+                .background(appColor, in: .circle)
             // Scaling effect when expanded
                 .scaleEffect(isExpanded ? 0.9 : 1)
         }

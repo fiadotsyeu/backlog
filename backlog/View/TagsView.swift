@@ -49,9 +49,13 @@ struct TagsView: View {
 
 struct TagContainerView: View {
     @Environment(\.modelContext) private var modelContext
+    
     @Query private var items: [Item]
     @Query private var tags: [Tag]
+    
     @State private var selectedTags: Set<Tag> = []
+    
+    @Binding var appColor: Color
 
     var body: some View {
         NavigationView {
@@ -112,7 +116,7 @@ struct TagContainerView: View {
                             ForEach(items.filter { item in
                                 selectedTags.contains(item.tag)
                             }, id: \.id) { item in
-                                NavigationLink(destination: DetailView(item: item)) {
+                                NavigationLink(destination: DetailView(item: item, appColor: $appColor)) {
                                     ItemRow(item: item)
                                 }
                             }

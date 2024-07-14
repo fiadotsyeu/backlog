@@ -28,7 +28,7 @@ struct backlogApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(appColor: $appColor)
                 .onAppear {
                     #if DEBUG
                     UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")

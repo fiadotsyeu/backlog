@@ -10,9 +10,13 @@ import SwiftData
 
 struct AllView: View {
     @Environment(\.modelContext) private var modelContext
+    
     @Query private var items: [Item]
     @Query private var tags: [Tag]
+    
     @State private var searchText = ""
+    
+    @Binding var appColor: Color
     
     private var searchResults : [Item] {
         searchText.isEmpty ? items : items.filter { $0.title.localizedStandardContains(searchText) }
@@ -29,13 +33,13 @@ struct AllView: View {
     var body: some View {
         NavigationView {
             VStack {
-                CustomSearchBar(searchText: $searchText)
+                CustomSearchBar(searchText: $searchText, appColor: $appColor)
                     .padding(.vertical, 8)
                 List {
                     if !pinnedItems.isEmpty {
                         Section(header: Text("Pinned items")) {
                             ForEach(pinnedItems, id: \.self) { item in
-                                NavigationLink(destination: DetailView(item: item)) {
+                                NavigationLink(destination: DetailView(item: item, appColor: $appColor)) {
                                     ItemRow(item: item)
                                 }
                             }
@@ -45,7 +49,7 @@ struct AllView: View {
                     if !unpinnedItems.isEmpty {
                         Section(header: Text("All items")) {
                             ForEach(unpinnedItems, id: \.self) { item in
-                                NavigationLink(destination: DetailView(item: item)) {
+                                NavigationLink(destination: DetailView(item: item, appColor: $appColor)) {
                                     ItemRow(item: item)
                                 }
                             }

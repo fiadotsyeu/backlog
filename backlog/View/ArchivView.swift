@@ -10,9 +10,10 @@ import SwiftData
 
 struct ArchivView: View {
     @Query private var items: [Item]
-    
+    @Binding var appColor: Color
+
     var body: some View {
-        ItemList(items: items) { item in
+        ItemList(items: items, appColor: $appColor) { item in
             item.isArchive
         }
     }

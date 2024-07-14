@@ -17,6 +17,8 @@ struct DetailView: View {
 
     @FocusState var isInputActive: Bool
     
+    @Binding var appColor: Color
+    
     @State var item: Item
     @State var lineLImit = 0
     @State private var keyboardHeight: CGFloat = 0
@@ -25,8 +27,9 @@ struct DetailView: View {
     @State private var selectedTag: Tag
     @State var showingTimer: Bool = false
     
-    init(item: Item) {
+    init(item: Item, appColor: Binding<Color>) {
         self.item = item
+        self._appColor = appColor
         _selectedTag = State(initialValue: item.tag)
     }
     
@@ -73,12 +76,14 @@ struct DetailView: View {
                         Link(destination: URL(string: item.url) ?? URL(string: "blank")!) {
                             Image(systemName: "link.circle")
                                 .font(.system(size: 23))
+                                .foregroundColor(appColor)
                         }
                     }
                     
                 }, label: {
                     Text("Additional fields:")
                         .font(.footnote)
+                        .foregroundColor(appColor)
                 }
             )
             .padding([.leading, .trailing], 15)
@@ -149,6 +154,8 @@ struct DetailView: View {
                 })
             }
         }
+        .accentColor(appColor)
+
         
         .toolbar(id: "navBar") {
             ToolbarItem(id: "Archive", placement: .navigationBarTrailing) {
@@ -157,8 +164,10 @@ struct DetailView: View {
                 } label: {
                     if item.isArchive {
                         Label("Unarchive", systemImage: "archivebox.fill")
+                            .foregroundColor(appColor)
                     } else {
                         Label("Archive", systemImage: "archivebox")
+                            .foregroundColor(appColor)
                     }
                 }
             }

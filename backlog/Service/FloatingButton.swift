@@ -138,12 +138,23 @@ fileprivate struct PressableButtonStyle: ButtonStyle {
 }
 
 struct FloatingAction: Identifiable {
+    @Binding var appColor: Color
+    
     private(set) var id: UUID = .init()
     var symbol: String
     var font: Font = .title3
-    var tint: Color = Color(.link)
-    var background: Color = .primary
+    var tint: Color = .primary
+    var background: Color
     var action: () -> ()
+    
+    init(appColor: Binding<Color>, symbol: String, font: Font = .title3, tint: Color = .primary, action: @escaping () -> ()) {
+        self._appColor = appColor
+        self.symbol = symbol
+        self.font = font
+        self.tint = tint
+        self.background = appColor.wrappedValue
+        self.action = action
+    }
 }
 
 @resultBuilder

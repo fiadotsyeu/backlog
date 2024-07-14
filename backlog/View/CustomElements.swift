@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 
 struct СustomPicker: View {
@@ -38,15 +39,18 @@ struct СustomPicker: View {
 
 struct CustomSearchBar: View {
     @Binding var searchText: String
+    @Binding var appColor: Color
 
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
+                .foregroundColor(appColor)
             TextField("Search", text: $searchText)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .textFieldStyle(CustomTextFieldStyle(borderColor: appColor))
+                .foregroundColor(appColor)
             Button(action: { hideKeyboard() }, label: {
                 Text("Cancel")
-                    .foregroundColor(.primary)
+                    .foregroundColor(appColor)
             })
 
         }
@@ -64,11 +68,15 @@ struct ItemList: View {
     @Environment(\.modelContext) private var modelContext
     @State private var items: [Item]
     @State private var searchText = ""
+    
+    @Binding var appColor: Color
+    
     typealias ItemFilter = (Item) -> Bool
     private var filter: ItemFilter
     
-    init(items: [Item], filter: @escaping ItemFilter = { _ in true }) {
+    init(items: [Item], appColor: Binding<Color>, filter: @escaping ItemFilter = { _ in true }) {
         self._items = State(initialValue: items)
+        self._appColor = appColor
         self.filter = filter
     }
     
@@ -79,12 +87,12 @@ struct ItemList: View {
     var body: some View {
         NavigationView {
             VStack {
-                CustomSearchBar(searchText: $searchText)
+                CustomSearchBar(searchText: $searchText, appColor: $appColor)
                     .padding(.vertical, 15)
                 List {
                     Section(header: Text("Favorite items")) {
                         ForEach(searchResults.filter(filter), id: \.self) { item in
-                            NavigationLink(destination: DetailView(item: item)) {
+                            NavigationLink(destination: DetailView(item: item, appColor: $appColor)) {
                                 ItemRow(item: item)
                             }
                         }

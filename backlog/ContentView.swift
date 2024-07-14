@@ -12,16 +12,18 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     
+    @Binding var appColor: Color
+    
     @State private var isActive = false
     
     var body: some View {
         if isActive {
-            HomeView()
+            HomeView(appColor: $appColor)
                 .onAppear {
                     ItemManager(items: items).startTimers()
                 }
         } else {
-            StartView(isActive: $isActive)
+            StartView(isActive: $isActive, appColor: $appColor)
         }
     }
 }

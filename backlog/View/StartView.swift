@@ -10,7 +10,10 @@ import SwiftUI
 struct StartView: View {
     
     @State private var scale = 0.7
+    
     @Binding var isActive: Bool
+    @Binding var appColor: Color
+
     @AppStorage("activateDarkMode") private var activateDarkMode: Bool = false
     
     var body: some View {
@@ -23,7 +26,7 @@ struct StartView: View {
                 .font(.system(.footnote))
                 .bold()
             Image(systemName: "ellipsis")
-                .foregroundColor(activateDarkMode ? .white : .black)
+                .foregroundColor(appColor)
                 .symbolEffect(.variableColor.reversing.cumulative, options: .repeat(3).speed(3), value: scale)
                 .font(.system(size: 70))
         }
