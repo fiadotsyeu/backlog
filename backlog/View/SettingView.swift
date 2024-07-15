@@ -43,11 +43,13 @@ struct SettingView: View {
                 Toggle(isOn: $isNotification, label: {
                     Text("Notification")
                 })
+                .toggleStyle(SwitchToggleStyle(tint: appColor))
             }
             Section(header: Text("MemoMinder")) {
                 Toggle(isOn: $isMemoMinder, label: {
                     Text("MemoMinder")
                 })
+                .toggleStyle(SwitchToggleStyle(tint: appColor))
                 .onChange(of: isMemoMinder) {
                     if isMemoMinder {
                         ItemManager(items: items).startTimers()
