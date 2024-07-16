@@ -265,3 +265,31 @@ struct CustomTextFieldStyle: TextFieldStyle {
             .background(RoundedRectangle(cornerRadius: 4).stroke(borderColor, lineWidth: 1))
     }
 }
+
+
+struct CustomColorPicker: View {
+    @Binding var selectedColor: Color
+    
+    let colors: [Color] = [.purple,
+                           .red,
+                           .orange,
+                           .yellow,
+                           .green,
+                           .blue]
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 20) {
+                ForEach(colors, id: \.self) { color in
+                    Button(action: {
+                        self.selectedColor = color
+                    }) {
+                        Image(systemName: self.selectedColor == color ? "checkmark.circle.fill" : "circle.fill")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                    }.accentColor(color)
+                }
+            }
+            .padding()
+        }
+    }
+}
