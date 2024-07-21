@@ -264,7 +264,10 @@ struct CustomTextFieldStyle: TextFieldStyle {
 
 
 struct CustomColorPicker: View {
+    @Environment(\.colorScheme) var colorScheme
+
     @Binding var appColor: Color
+    
     @AppStorage("appColorHex") private var appColorHex: String = "#FFFFFF"
     
     let colors: [Color] = [.purple, .red, .orange, .yellow, .green, .blue]
@@ -277,23 +280,24 @@ struct CustomColorPicker: View {
                         appColor = color
                         if let hex = color.toHex {
                             appColorHex = hex
-                            print("ok")
-                            print("appColor \(appColor)")
-                            print("appColorHex \(appColorHex)")
-                        } else {
-                            print("not ok")
-                            print("appColor \(appColor)")
-                            print("appColorHex \(appColorHex)")
                         }
                     }) {
-                        Image(systemName: appColor == color ? "dot.circle.fill" : "circle.fill")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(color)
+                        ZStack {
+                            Circle()
+                                .fill(color)
+                                .frame(width: 30, height: 30)
+                            if color == appColor {
+                                Image(systemName: "dot.circle.fill")
+                                    .frame(width: 30, height: 30)
+                                    .foregroundColor(colorScheme == .dark ? .black : .white)
+                            }
+                        }
                     }
                 }
             }
             .padding()
         }
+
     }
 }
+
