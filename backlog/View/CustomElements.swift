@@ -264,25 +264,33 @@ struct CustomTextFieldStyle: TextFieldStyle {
 
 
 struct CustomColorPicker: View {
-    @Binding var selectedColor: Color
+    @Binding var appColor: Color
+    @AppStorage("appColorHex") private var appColorHex: String = "#FFFFFF"
     
-    let colors: [Color] = [.purple,
-                           .red,
-                           .orange,
-                           .yellow,
-                           .green,
-                           .blue]
+    let colors: [Color] = [.purple, .red, .orange, .yellow, .green, .blue]
+    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 20) {
+            HStack(spacing: 15) {
                 ForEach(colors, id: \.self) { color in
                     Button(action: {
-                        self.selectedColor = color
+                        appColor = color
+                        if let hex = color.toHex {
+                            appColorHex = hex
+                            print("ok")
+                            print("appColor \(appColor)")
+                            print("appColorHex \(appColorHex)")
+                        } else {
+                            print("not ok")
+                            print("appColor \(appColor)")
+                            print("appColorHex \(appColorHex)")
+                        }
                     }) {
-                        Image(systemName: self.selectedColor == color ? "checkmark.circle.fill" : "circle.fill")
+                        Image(systemName: appColor == color ? "dot.circle.fill" : "circle.fill")
                             .resizable()
                             .frame(width: 30, height: 30)
-                    }.accentColor(color)
+                            .foregroundColor(color)
+                    }
                 }
             }
             .padding()
