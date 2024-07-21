@@ -37,7 +37,10 @@ struct backlogApp: App {
                     UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
                     #endif
                     notificationManager.requestNotificationPermission()
-                    appColor = Color(hex: appColorHex)
+                    
+                    DispatchQueue.main.async {
+                        appColor = Color(hex: appColorHex)
+                    }
                 }
         }
         .modelContainer(sharedModelContainer)
