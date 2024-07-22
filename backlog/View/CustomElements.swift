@@ -66,6 +66,8 @@ struct CustomSearchBar: View {
 
 struct ItemList: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var items: [Item]
     @State private var searchText = ""
     
@@ -85,6 +87,19 @@ struct ItemList: View {
     }
     
     var body: some View {
+        HStack {
+            Button {
+                dismiss()
+            } label: {
+                Label("Dismiss", systemImage: "xmark.circle")
+                    .font(.title3)
+                    .foregroundColor(.red)
+            }
+            
+            Spacer()
+        }
+        .padding()
+        
         NavigationView {
             VStack {
                 CustomSearchBar(searchText: $searchText, appColor: $appColor)
