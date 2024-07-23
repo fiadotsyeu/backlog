@@ -72,10 +72,7 @@ struct SettingView: View {
                 }
             }
             Section(header: Text("App color")) {
-                ColorPicker("Chosen color", selection: $appColor)
-                    .onChange(of: appColor) { oldValue, newValue in
-                        appColorHex = newValue.toHex ?? "#FFFFFF"
-                    }
+                CustomColorPicker(appColor: $appColor)
             }
             Section(header: Text("Language")) {
                 Picker(selection: $selectedLanguage, label: Text("Select a language")) {
