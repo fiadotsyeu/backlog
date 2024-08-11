@@ -19,7 +19,7 @@ struct ArchivView: View {
     }
 }
 
-#Preview {
-    ArchivView()
-        .modelContainer(for: Item.self, inMemory: true)
-}
+//#Preview {
+//    ArchivView()
+//        .modelContainer(for: Item.self, inMemory: true)
+//}

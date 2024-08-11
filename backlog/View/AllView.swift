@@ -75,14 +75,3 @@ struct AllView: View {
         }
     }
 }
-
-
-
-#Preview {
-    AllView()
-        .modelContainer(for: Item.self, inMemory: true)
-}
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
-}

@@ -312,7 +312,6 @@ struct CustomColorPicker: View {
             }
             .padding()
         }
-
     }
 }
 

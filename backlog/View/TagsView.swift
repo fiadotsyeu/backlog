@@ -138,15 +138,3 @@ struct TagContainerView: View {
         .navigationViewStyle(.stack)
     }
 }
-
-
-#Preview {
-    TagsView(tagColor: ColorModel.from(color: .red), systemImage: "heart.circle", titleKey: "Title", isSelected: false)
-        .modelContainer(for: Item.self, inMemory: true)
-        .previewLayout(.sizeThatFits)
-        .padding()
-}
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: false)
-}

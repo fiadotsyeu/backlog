@@ -20,7 +20,7 @@ struct FavoriteView: View {
     }
 }
 
-#Preview {
-    FavoriteView()
-        .modelContainer(for: Item.self, inMemory: true)
-}
+//#Preview {
+//    FavoriteView()
+//        .modelContainer(for: Item.self, inMemory: true)
+//}

@@ -294,24 +294,3 @@ extension Publishers {
     }
 }
 
-#Preview {
-    do {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try ModelContainer(for: Item.self, configurations: config)
-        let color = ColorModel(color: .black)
-        let newsTag = Tag(systemImage: "bookmark.circle", titleKey: "framevorks", color: color)
-        let newItem = Item(title: "swiftUI", subTitle: "subTitle", body: "body", tag: newsTag, url: "")
-        @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
-
-        return DetailView(item: newItem)
-            .modelContainer(container)
-    } catch {
-        return Text("Failed to create preview: \(error.localizedDescription)")
-    }
-}
-
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
-}
