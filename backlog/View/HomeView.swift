@@ -172,7 +172,7 @@ struct HomeView: View {
         .animation(.easeInOut, value: 0.35)
         .sheet(isPresented: $showingSheet) {
             SheetView()
-                .presentationDetents([.large])
+                .presentationDetents([.medium])
         }
         .sheet(isPresented: $showingArchive) {
             ArchivView(appColor: $appColor)
